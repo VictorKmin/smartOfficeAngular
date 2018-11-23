@@ -1,0 +1,14 @@
+<div class="room">
+  <b>ROOM {{room.id}}</b> <br>
+  current temperature <b> {{room.room_temp}} °C </b>
+  <br>
+  current status <b>{{room.status}}</b>
+  <br>
+  <button class="plusT" (click)="plusTemp()"> +</button>
+  <div class="newTemp">{{room.temp}}</div>
+  <button class="minusT" (click)="minusTemp()"> -</button>
+  <br>
+  <button class="goodT" (click)="sendTempOrder()"> SUBMIT </button>
+  <p>
+    <button class="turnOff" (click)="turnOff()"> TURN OFF</button>
+</div>

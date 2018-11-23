@@ -1,0 +1,24 @@
+.room {
+  width: 300px;
+  height: 300px;
+  background-color: moccasin;
+  border: lightgrey solid 2px;
+  text-align: center;
+  display: inline-block;
+}
+
+.plusT{
+  background-color: coral;
+}
+
+.minusT{
+  background-color: deepskyblue;
+}
+
+.goodT {
+  background-color: limegreen;
+}
+
+.turnOff{
+  background-color: brown;
+}
