@@ -22,3 +22,8 @@
 .turnOff{
   background-color: brown;
 }
+
+.getStat>button{
+  background-color: darkkhaki;
+  padding: 0px;
+}
