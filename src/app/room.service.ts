@@ -9,10 +9,8 @@ export class RoomService {
   constructor(private http: HttpClient) {
   }
 
-
   getRooms() {
-    return this.http.get
-    ('http://192.168.0.131:5000/stat');
+    return this.http.get('http://192.168.0.131:5000/stat');
   }
 
 }

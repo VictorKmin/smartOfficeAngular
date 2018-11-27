@@ -12,6 +12,6 @@
   <p>
     <button class="turnOff" (click)="turnOff()"> TURN OFF</button>
   <div class="getStat">
-    <button (click)="getStat()">Get all statistic of this room</button>
+    <button [routerLink]="['room', room.id]" >Get all statistic of this room</button>
   </div>
 </div>

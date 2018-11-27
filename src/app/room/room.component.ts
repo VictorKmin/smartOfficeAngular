@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {FullstatService} from '../fullstat.service';
 
 
 @Component({

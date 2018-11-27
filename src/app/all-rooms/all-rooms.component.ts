@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RoomService} from '../room.service';
 
 @Component({
@@ -11,14 +11,11 @@ export class AllRoomsComponent implements OnInit {
   constructor(private roomService: RoomService) {
   }
 
-  rooms = [];
+  rooms: Object = [];
 
   ngOnInit() {
     this.roomService.getRooms().subscribe(response => {
-      for (const responseElement of response) {
-        this.rooms.push(responseElement);
-      }
-      console.log(this.rooms);
+      this.rooms = response;
     });
   }
 }

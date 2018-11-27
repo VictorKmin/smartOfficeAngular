@@ -9,10 +9,7 @@ export class FullstatService {
   constructor(private http: HttpClient) {
   }
 
-  getStatistic() {
-    return this.http.get
-    (`http://192.168.0.131:5000/stat/full?id=2`).subscribe(allStat => {
-      console.log(allStat);
-    });
+  getStatistic(roomid) {
+    return this.http.get(`http://192.168.0.131:5000/stat/full?id=${roomid}`);
   }
 }

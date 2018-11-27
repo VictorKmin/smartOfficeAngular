@@ -6,25 +6,24 @@ import { RoomComponent } from './room/room.component';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 import { AllRoomsComponent } from './all-rooms/all-rooms.component';
-import { FullstatComponent } from './fullstat/fullstat.component';
 import {FullstatService} from './fullstat.service';
-
-const routes = [
-  {path: '', component: AllRoomsComponent},
-  {path: 'stat', component: FullstatComponent},
-];
+import { RoomDetailComponent } from './room-detail/room-detail.component';
+import {AppRoutingModule} from './app-routing.module';
+import { OneRoomStatComponent } from './one-room-stat/one-room-stat.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RoomComponent,
     AllRoomsComponent,
-    FullstatComponent
+    RoomDetailComponent,
+    OneRoomStatComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    RouterModule.forRoot(routes),
+    AppRoutingModule,
+    RouterModule
   ],
   providers: [FullstatService],
   bootstrap: [AppComponent]
