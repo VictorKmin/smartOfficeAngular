@@ -16,7 +16,6 @@ export class AllRoomsComponent implements OnInit {
   ngOnInit() {
     this.roomService.getRooms().subscribe(response => {
       this.rooms = response;
-      console.log(this.rooms);
     });
   }
 }

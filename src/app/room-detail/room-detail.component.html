@@ -1,3 +1,37 @@
-<div *ngIf="chart">
+Year:
+<select>
+  <option *ngFor="let year of years">{{year}}</option>
+</select>
+Month:
+<select>
+  <option *ngFor="let month of months">{{month}}</option>
+</select>
+Day:
+<select>
+  <option *ngFor="let day of days">{{day}}</option>
+</select>
+Hour:
+<select>
+  <option *ngFor="let hour of hours">{{hour}}</option>
+</select>
+<br>
+Year:
+<select>
+  <option *ngFor="let year of years">{{year}}</option>
+</select>
+Month:
+<select>
+  <option *ngFor="let month of months">{{month}}</option>
+</select>
+Day:
+<select>
+  <option *ngFor="let day of days">{{day}}</option>
+</select>
+Hour:
+<select>
+  <option *ngFor="let hour of hours">{{hour}}</option>
+</select>
+
+<div *ngIf="chart" id="details">
   <canvas id="canvas">{{ chart }}</canvas>
 </div>
