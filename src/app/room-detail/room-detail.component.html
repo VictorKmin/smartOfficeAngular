@@ -1,36 +1,38 @@
 Year:
-<select>
-  <option *ngFor="let year of years">{{year}}</option>
+<select [(ngModel)]="fromYear">
+  <option *ngFor="let year of years" [value] = "year">{{year}}</option>
 </select>
 Month:
-<select>
-  <option *ngFor="let month of months">{{month}}</option>
+<select [(ngModel)]="fromMonth">
+  <option *ngFor="let month of months" [value]="month">{{month}}</option>
 </select>
 Day:
-<select>
-  <option *ngFor="let day of days">{{day}}</option>
+<select [(ngModel)]="fromDay">
+  <option *ngFor="let day of days" [value]="day">{{day}}</option>
 </select>
 Hour:
-<select>
-  <option *ngFor="let hour of hours">{{hour}}</option>
+<select [(ngModel)]="fromHour">
+  <option *ngFor="let hour of hours" [value]="hour">{{hour}}</option>
 </select>
 <br>
 Year:
-<select>
-  <option *ngFor="let year of years">{{year}}</option>
+<select [(ngModel)]="toYear">
+  <option *ngFor="let year of years" [value]="year">{{year}}</option>
 </select>
 Month:
-<select>
-  <option *ngFor="let month of months">{{month}}</option>
+<select [(ngModel)]="toMonth">
+  <option *ngFor="let month of months" [value]="month">{{month}}</option>
 </select>
 Day:
-<select>
-  <option *ngFor="let day of days">{{day}}</option>
+<select [(ngModel)]="toDay">
+  <option *ngFor="let day of days" [value]="day">{{day}}</option>
 </select>
 Hour:
-<select>
-  <option *ngFor="let hour of hours">{{hour}}</option>
+<select [(ngModel)]="toHour">
+  <option *ngFor="let hour of hours" [value]="hour">{{hour}}</option>
 </select>
+<br>
+<button (click)="chacngeChart()">Build Chart</button>
 
 <div *ngIf="chart" id="details">
   <canvas id="canvas">{{ chart }}</canvas>

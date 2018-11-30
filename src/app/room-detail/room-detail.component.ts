@@ -17,6 +17,7 @@ export class RoomDetailComponent implements OnInit {
   ) {
   }
 
+
   time = [];  // YYYY.MM.DD HH:MM
   temp = [];
   chart = [];
@@ -27,26 +28,24 @@ export class RoomDetailComponent implements OnInit {
   minutes = [];
   roomId = this.route.snapshot.params['id'];
 
+  fromYear: any;
+  fromMonth: any;
+  fromDay: any;
+  fromHour: any;
+  toYear: any;
+  toMonth: any;
+  toDay: any;
+  toHour: any;
+
   onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
   }
 
-  getUniqoueDate(res) {
-    res.forEach(y => {
-      this.temp.push(y.room_temp);
-      this.time.push(`${y.year}.${y.month}.${y.day} ${y.hour}:${y.minute}`);
-      //
-      this.years.push(y.year);
-      this.months.push(y.month);
-      this.days.push(y.day);
-      this.hours.push(y.hour);
-      this.minutes.push(y.minute);
-      //
-      this.years = this.years.filter(this.onlyUnique);
-      this.months = this.months.filter(this.onlyUnique);
-      this.days = this.days.filter(this.onlyUnique);
-      this.hours = this.hours.filter(this.onlyUnique);
-    });
+  getUniqoueDate() {
+    this.years = this.years.filter(this.onlyUnique);
+    this.months = this.months.filter(this.onlyUnique);
+    this.days = this.days.filter(this.onlyUnique);
+    this.hours = this.hours.filter(this.onlyUnique);
   }
 
   buildChart() {
@@ -78,11 +77,50 @@ export class RoomDetailComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.fullStat.getStatistic(this.roomId).subscribe((res: Data[]) => {
+
+  chacngeChart() {
+    this.time = [];
+    this.temp = [];
+    this.chart = [];
+
+    const body = {
+      from: `${this.fromYear}-${this.fromMonth}-${this.fromDay} ${this.fromHour}`,
+      to: `${this.toYear}-${this.toMonth}-${this.toDay} ${this.toHour}`,
+      roomId: this.roomId
+    };
+    this.fullStat.getStatisticByDate(body).subscribe((res: Data[]) => {
+      //
       console.log(res);
-      this.getUniqoueDate(res);
+      this.dateController(res);
+      this.getUniqoueDate();
       this.buildChart();
     });
   }
+
+  private dateController(res: Data[]) {
+    res.forEach(respObject => {
+      this.temp.push(respObject.room_temp);
+
+      const [date, time] = respObject.fulldate.split(' ');
+      const [year, month, day] = date.split('-');
+      const [hour, minute] = time.split(':');
+      this.time.push(`${year}.${month}.${day} ${hour}:${minute}`);
+
+      this.years.push(year);
+      this.months.push(month);
+      this.days.push(day);
+      this.hours.push(hour);
+      this.minutes.push(minute);
+    });
+  }
+
+  ngOnInit() {
+    this.fullStat.getStatistic(this.roomId).subscribe((res: Data[]) => {
+      console.log(res);
+      this.dateController(res);
+      this.getUniqoueDate();
+      this.buildChart();
+    });
+  }
+
 }

@@ -9,6 +9,7 @@ import { AllRoomsComponent } from './all-rooms/all-rooms.component';
 import {FullstatService} from './fullstat.service';
 import { RoomDetailComponent } from './room-detail/room-detail.component';
 import {AppRoutingModule} from './app-routing.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {AppRoutingModule} from './app-routing.module';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ],
   providers: [FullstatService],
   bootstrap: [AppComponent]
