@@ -1,38 +1,19 @@
-Year:
-<select [(ngModel)]="fromYear">
-  <option *ngFor="let year of years" [value] = "year">{{year}}</option>
-</select>
-Month:
-<select [(ngModel)]="fromMonth">
-  <option *ngFor="let month of months" [value]="month">{{month}}</option>
-</select>
-Day:
-<select [(ngModel)]="fromDay">
-  <option *ngFor="let day of days" [value]="day">{{day}}</option>
-</select>
-Hour:
-<select [(ngModel)]="fromHour">
-  <option *ngFor="let hour of hours" [value]="hour">{{hour}}</option>
-</select>
+<mat-form-field>
+  <input #from matInput [matDatepicker]="picker1" placeholder=" ">
+  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+  <mat-datepicker #picker1></mat-datepicker>
+</mat-form-field>
 <br>
-Year:
-<select [(ngModel)]="toYear">
-  <option *ngFor="let year of years" [value]="year">{{year}}</option>
-</select>
-Month:
-<select [(ngModel)]="toMonth">
-  <option *ngFor="let month of months" [value]="month">{{month}}</option>
-</select>
-Day:
-<select [(ngModel)]="toDay">
-  <option *ngFor="let day of days" [value]="day">{{day}}</option>
-</select>
-Hour:
-<select [(ngModel)]="toHour">
-  <option *ngFor="let hour of hours" [value]="hour">{{hour}}</option>
-</select>
+<mat-form-field>
+  <input #to matInput [matDatepicker]="picker" placeholder=" ">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+<br>
+<button (click)="reset()">Reset</button>
 <br>
 <button (click)="chacngeChart()">Build Chart</button>
+
 
 <div *ngIf="chart" id="details">
   <canvas id="canvas">{{ chart }}</canvas>

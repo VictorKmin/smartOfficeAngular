@@ -9,11 +9,8 @@ export class FullstatService {
   constructor(private http: HttpClient) {
   }
 
-  getStatistic(roomid) {
-    return this.http.get(`http://192.168.0.131:5000/stat/full?id=${roomid}`);
-  }
-
   getStatisticByDate(body) {
+    console.log(body);
     return this.http.post(`http://192.168.0.131:5000/stat/full`, body);
   }
 }

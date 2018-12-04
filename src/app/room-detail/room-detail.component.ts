@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FullstatService} from '../fullstat.service';
 import {Chart} from 'chart.js';
 import {Data} from './Data';
+import {MatInput} from '@angular/material';
 
 @Component({
   selector: 'app-room-detail',
@@ -11,41 +12,32 @@ import {Data} from './Data';
 })
 export class RoomDetailComponent implements OnInit {
 
-  constructor(
-    private route: ActivatedRoute,
-    private  fullStat: FullstatService
-  ) {
-  }
+  @ViewChild('from', {read: MatInput}) from: MatInput;
+  @ViewChild('to', {read: MatInput}) to: MatInput;
 
+  constructor(private route: ActivatedRoute, private  fullStat: FullstatService) {
+  }
 
   time = [];  // YYYY.MM.DD HH:MM
   temp = [];
-  chart = [];
-  years = [];
-  months = [];
-  days = [];
-  hours = [];
-  minutes = [];
+  chart: Array<any> = [];
+  // years = [];
+  // months = [];
+  // days = [];
+  // hours = [];
+  // minutes = [];
   roomId = this.route.snapshot.params['id'];
 
   fromYear: any;
   fromMonth: any;
   fromDay: any;
-  fromHour: any;
   toYear: any;
   toMonth: any;
   toDay: any;
-  toHour: any;
 
-  onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-  }
-
-  getUniqoueDate() {
-    this.years = this.years.filter(this.onlyUnique);
-    this.months = this.months.filter(this.onlyUnique);
-    this.days = this.days.filter(this.onlyUnique);
-    this.hours = this.hours.filter(this.onlyUnique);
+  reset() {
+    this.from.value = '';
+    this.to.value = '';
   }
 
   buildChart() {
@@ -77,22 +69,34 @@ export class RoomDetailComponent implements OnInit {
     });
   }
 
-
   chacngeChart() {
     this.time = [];
     this.temp = [];
     this.chart = [];
 
+    console.log('********************');
+    console.log(this.from.value);
+    console.log(this.to.value);
+    console.log('********************');
+
+    this.fromYear = new Date(this.from.value).getFullYear();
+    this.fromMonth = new Date(this.from.value).getMonth();
+    this.fromDay = new Date(this.from.value).getDay();
+    this.toYear = new Date(this.to.value).getFullYear();
+    this.toMonth = new Date(this.to.value).getMonth();
+    this.toDay = new Date(this.to.value).getDay();
+
     const body = {
-      from: `${this.fromYear}-${this.fromMonth}-${this.fromDay} ${this.fromHour}`,
-      to: `${this.toYear}-${this.toMonth}-${this.toDay} ${this.toHour}`,
+      from: `${this.fromYear}-${this.fromMonth}-${this.fromDay}`,
+      to: `${this.toYear}-${this.toMonth}-${this.toDay}`,
       roomId: this.roomId
     };
+
+    localStorage.setItem('date', JSON.stringify(body));
+
     this.fullStat.getStatisticByDate(body).subscribe((res: Data[]) => {
-      //
       console.log(res);
       this.dateController(res);
-      this.getUniqoueDate();
       this.buildChart();
     });
   }
@@ -102,25 +106,24 @@ export class RoomDetailComponent implements OnInit {
       this.temp.push(respObject.room_temp);
 
       const [date, time] = respObject.fulldate.split(' ');
-      const [year, month, day] = date.split('-');
-      const [hour, minute] = time.split(':');
-      this.time.push(`${year}.${month}.${day} ${hour}:${minute}`);
-
-      this.years.push(year);
-      this.months.push(month);
-      this.days.push(day);
-      this.hours.push(hour);
-      this.minutes.push(minute);
+      // const [year, month, day] = date.split('-');
+      // const [hour, minute] = time.split(':');
+      this.time.push(`${date} ${time}`);
+      // this.time.push(`${year}.${month}.${day} ${hour}:${minute}`);
+      // this.years.push(year);
+      // this.months.push(month);
+      // this.days.push(day);
+      // this.hours.push(hour);
+      // this.minutes.push(minute);
     });
   }
 
   ngOnInit() {
-    this.fullStat.getStatistic(this.roomId).subscribe((res: Data[]) => {
+    const date = localStorage.getItem('date');
+    this.fullStat.getStatisticByDate(JSON.parse(date)).subscribe((res: Data[]) => {
       console.log(res);
       this.dateController(res);
-      this.getUniqoueDate();
       this.buildChart();
     });
   }
-
 }
