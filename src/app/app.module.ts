@@ -16,6 +16,7 @@ import {MatFormFieldModule} from '@angular/material';
 import {MatInputModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatNativeDateModule, MatSliderModule} from '@angular/material';
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {MatNativeDateModule, MatSliderModule} from '@angular/material';
     RoomComponent,
     AllRoomsComponent,
     RoomDetailComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

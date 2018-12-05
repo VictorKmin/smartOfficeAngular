@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {RoomService} from '../room.service';
-
+import {Response} from '../Response';
 @Component({
   selector: 'app-all-rooms',
   templateUrl: './all-rooms.component.html',
@@ -14,8 +14,9 @@ export class AllRoomsComponent implements OnInit {
   rooms: Object = [];
 
   ngOnInit() {
-    this.roomService.getRooms().subscribe(response => {
-      this.rooms = response;
+    this.roomService.getRooms().subscribe((response: Response) => {
+      const {success, message: data} = response;
+      this.rooms = data;
     });
   }
 }

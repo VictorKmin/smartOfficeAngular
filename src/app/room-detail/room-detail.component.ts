@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FullstatService} from '../fullstat.service';
 import {Chart} from 'chart.js';
 import {Data} from './Data';
+import {Response} from '../Response';
 import {MatInput} from '@angular/material';
 
 @Component({
@@ -15,17 +16,13 @@ export class RoomDetailComponent implements OnInit {
   @ViewChild('from', {read: MatInput}) from: MatInput;
   @ViewChild('to', {read: MatInput}) to: MatInput;
 
-  constructor(private route: ActivatedRoute, private  fullStat: FullstatService) {
+  constructor(private route: ActivatedRoute, private  fullStat: FullstatService, private router: Router) {
   }
 
-  time = [];  // YYYY.MM.DD HH:MM
+  error: String = '';
+  time = [];  // YYYY.MM.DD HH:MM:SS
   temp = [];
   chart: Array<any> = [];
-  // years = [];
-  // months = [];
-  // days = [];
-  // hours = [];
-  // minutes = [];
   roomId = this.route.snapshot.params['id'];
 
   fromYear: any;
@@ -74,17 +71,8 @@ export class RoomDetailComponent implements OnInit {
     this.temp = [];
     this.chart = [];
 
-    console.log('********************');
-    console.log(this.from.value);
-    console.log(this.to.value);
-    console.log('********************');
-
-    this.fromYear = new Date(this.from.value).getFullYear();
-    this.fromMonth = new Date(this.from.value).getMonth();
-    this.fromDay = new Date(this.from.value).getDay();
-    this.toYear = new Date(this.to.value).getFullYear();
-    this.toMonth = new Date(this.to.value).getMonth();
-    this.toDay = new Date(this.to.value).getDay();
+    [this.fromDay, this.fromMonth, this.fromYear] = new Date(this.from.value).toLocaleDateString().split('.');
+    [this.toDay, this.toMonth, this.toYear] = new Date(this.to.value).toLocaleDateString().split('.');
 
     const body = {
       from: `${this.fromYear}-${this.fromMonth}-${this.fromDay}`,
@@ -93,37 +81,34 @@ export class RoomDetailComponent implements OnInit {
     };
 
     localStorage.setItem('date', JSON.stringify(body));
-
-    this.fullStat.getStatisticByDate(body).subscribe((res: Data[]) => {
-      console.log(res);
-      this.dateController(res);
-      this.buildChart();
-    });
+    this.main(body);
   }
 
   private dateController(res: Data[]) {
     res.forEach(respObject => {
       this.temp.push(respObject.room_temp);
+      this.time.push(respObject.fulldate.slice(0, -3));
+    });
+  }
 
-      const [date, time] = respObject.fulldate.split(' ');
-      // const [year, month, day] = date.split('-');
-      // const [hour, minute] = time.split(':');
-      this.time.push(`${date} ${time}`);
-      // this.time.push(`${year}.${month}.${day} ${hour}:${minute}`);
-      // this.years.push(year);
-      // this.months.push(month);
-      // this.days.push(day);
-      // this.hours.push(hour);
-      // this.minutes.push(minute);
+  main(date) {
+    this.fullStat.getStatisticByDate(date).subscribe((res: Response) => {
+      const {success, message: data} = res;
+      if (!success) {
+        this.error = data;
+        // this.router.navigateByUrl(`/error/${data}`);
+      } else {
+        this.dateController(data);
+        this.buildChart();
+      }
     });
   }
 
   ngOnInit() {
-    const date = localStorage.getItem('date');
-    this.fullStat.getStatisticByDate(JSON.parse(date)).subscribe((res: Data[]) => {
-      console.log(res);
-      this.dateController(res);
-      this.buildChart();
-    });
+    let date = localStorage.getItem('date');
+    if (!date) {
+      date = JSON.stringify({roomId: this.roomId});
+    }
+    this.main(JSON.parse(date));
   }
 }
