@@ -5,6 +5,7 @@ import {Chart} from 'chart.js';
 import {Data} from './Data';
 import {Response} from '../Response';
 import {MatInput} from '@angular/material';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-room-detail',
@@ -19,7 +20,6 @@ export class RoomDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private  fullStat: FullstatService, private router: Router) {
   }
 
-  error: String = '';
   time = [];  // YYYY.MM.DD HH:MM:SS
   temp = [];
   chart: Array<any> = [];
@@ -37,6 +37,9 @@ export class RoomDetailComponent implements OnInit {
     this.to.value = '';
   }
 
+  /**
+   * This method build chart from times and temperature
+   */
   buildChart() {
     this.chart = new Chart('canvas', {
       type: 'line',
@@ -45,27 +48,45 @@ export class RoomDetailComponent implements OnInit {
         datasets: [
           {
             data: this.temp,
-            borderColor: '#3cba9f',
+            borderColor: '#1dba9c',
             fill: false
           }
         ]
       },
       options: {
+        elements: {
+          line: {
+            tension: .15, // disables bezier curves
+          }
+        },
         legend: {
           display: false
         },
+        // https://codepen.io/shivabhusal/pen/ayyVeL?editors=1010 - how I do this
         scales: {
           xAxes: [{
-            display: true
+            type: 'time',
+            time: {
+              unit: 'hour',
+              displayFormats: {
+                hour: 'MM-DD HH:MM'
+              }
+            },
+            distribution: 'linear'
           }],
           yAxes: [{
-            display: true
+            display: true,
           }],
         }
       }
     });
   }
 
+  /**
+   * This method works, when we press button on html page.
+   * Take date from datepicker, trim it, build another object
+   * Then we insert it into local storage and build chart
+   */
   chacngeChart() {
     this.time = [];
     this.temp = [];
@@ -84,21 +105,32 @@ export class RoomDetailComponent implements OnInit {
     this.main(body);
   }
 
-  private dateController(res: Data[]) {
+  /**
+   * This method take array statistic, iterate it
+   * Then we push temperature to "temp" array and dates to "time" array
+   * @param res - array of statistic from back-end response.
+   */
+  private dataController(res: Data[]) {
     res.forEach(respObject => {
       this.temp.push(respObject.room_temp);
-      this.time.push(respObject.fulldate.slice(0, -3));
+      this.time.push(moment(respObject.fulldate, 'YYYY-MM-DD HH:mm:ss'));
     });
   }
 
+  /**
+   * This method checks if we have an error.
+   * If error present - we take Error code and render error page
+   * @param date - date from LocalStorage
+   */
   main(date) {
     this.fullStat.getStatisticByDate(date).subscribe((res: Response) => {
       const {success, message: data} = res;
+      console.log(data);
       if (!success) {
-        this.error = data;
-        // this.router.navigateByUrl(`/error/${data}`);
+        localStorage.removeItem('date');
+        this.router.navigateByUrl(`/error/${data}`);
       } else {
-        this.dateController(data);
+        this.dataController(data);
         this.buildChart();
       }
     });

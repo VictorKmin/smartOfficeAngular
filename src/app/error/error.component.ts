@@ -10,7 +10,7 @@ export class ErrorComponent implements OnInit {
   constructor(private route: ActivatedRoute) {
   }
 
-  errorCode = this.route.snapshot.params['code'];
+  error = this.route.snapshot.params['code'];
 
   ngOnInit() {
   }

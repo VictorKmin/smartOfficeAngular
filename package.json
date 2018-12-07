@@ -22,10 +22,11 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
+    "chart.js": "latest",
     "core-js": "^2.5.4",
+    "moment": "^2.22.2",
     "rxjs": "~6.3.3",
-    "zone.js": "~0.8.26",
-    "chart.js": "latest"
+    "zone.js": "~0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",
