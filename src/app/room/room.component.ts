@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
@@ -11,6 +11,13 @@ export class RoomComponent {
   }
 
   @Input() room;
+
+  // checkIsModuleAlive(isAlive) {
+  //   if (isAlive) {
+  //     const room = document.getElementById(`room`);
+  //     room.style.background = '#A7A7A7';
+  //   }
+  // }
 
   plusTemp() {
     this.room.temp++;
@@ -37,5 +44,9 @@ export class RoomComponent {
     });
     this.room.status = 'Always OFF';
   }
+
+  // ngOnInit() {
+  //   this.checkIsModuleAlive(this.room.isalive);
+  // }
 
 }

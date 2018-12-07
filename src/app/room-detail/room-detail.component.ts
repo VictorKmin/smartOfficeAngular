@@ -101,7 +101,7 @@ export class RoomDetailComponent implements OnInit {
       roomId: this.roomId
     };
 
-    localStorage.setItem('date', JSON.stringify(body));
+    localStorage.setItem(`date${this.roomId}`, JSON.stringify(body));
     this.main(body);
   }
 
@@ -124,10 +124,11 @@ export class RoomDetailComponent implements OnInit {
    */
   main(date) {
     this.fullStat.getStatisticByDate(date).subscribe((res: Response) => {
-      const {success, message: data} = res;
+      let {success, message: data} = res;
       console.log(data);
       if (!success) {
-        localStorage.removeItem('date');
+        localStorage.clear();
+        data = +data.slice(data.length - 2, data.length).trim();
         this.router.navigateByUrl(`/error/${data}`);
       } else {
         this.dataController(data);
@@ -137,7 +138,7 @@ export class RoomDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    let date = localStorage.getItem('date');
+    let date = localStorage.getItem(`date${this.roomId}`);
     if (!date) {
       date = JSON.stringify({roomId: this.roomId});
     }
