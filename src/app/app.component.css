@@ -1,0 +1,17 @@
+.main {
+  margin: -22px -8px 0 -8px;
+  background-color: white;
+  height: 300px;
+  background-image: url('../../linkedin-27.jpg');
+}
+.main-text {
+  color: #0cdecb;
+  border-radius: 10%;
+  font-size: 50px;
+  font-family: "Harlow Solid Italic";
+  margin: 110px 0 0 40px;
+  padding: 20px;
+  background:radial-gradient(ellipse at center, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.38) 35%, rgba(0, 0, 0, 0) 100%);
+  overflow: hidden;
+  display: inline-block;
+}

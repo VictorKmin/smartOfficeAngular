@@ -14,11 +14,11 @@ import * as moment from 'moment';
 })
 export class RoomDetailComponent implements OnInit {
 
-  @ViewChild('from', {read: MatInput}) from: MatInput;
-  @ViewChild('to', {read: MatInput}) to: MatInput;
-
   constructor(private route: ActivatedRoute, private  fullStat: FullstatService, private router: Router) {
   }
+
+  @ViewChild('from', {read: MatInput}) from: MatInput;
+  @ViewChild('to', {read: MatInput}) to: MatInput;
 
   time = [];  // YYYY.MM.DD HH:MM:SS
   temp = [];
@@ -31,6 +31,8 @@ export class RoomDetailComponent implements OnInit {
   toYear: any;
   toMonth: any;
   toDay: any;
+
+  dateToPass = new Date(Date.now()).toLocaleDateString();
 
   reset() {
     this.from.value = '';
@@ -117,6 +119,11 @@ export class RoomDetailComponent implements OnInit {
     });
   }
 
+  dosomeaction() {
+    const date = new Date(Date.now());
+    this.dateToPass = date;
+  }
+  
   /**
    * This method checks if we have an error.
    * If error present - we take Error code and render error page
