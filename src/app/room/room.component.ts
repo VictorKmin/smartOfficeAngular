@@ -1,25 +1,29 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {RoomDetailComponent} from '../room-detail/room-detail.component';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css']
 })
-export class RoomComponent implements OnInit {
-  constructor(private http: HttpClient) {
+export class RoomComponent {
+  constructor(private http: HttpClient,
+              private RoomDetail: RoomDetailComponent
+  ) {
   }
 
   @Input() room;
 
-  currentOrLast = 'current';
-
   plusTemp() {
     this.room.temp++;
+    this.sendTempOrder();
   }
 
   minusTemp() {
     this.room.temp--;
+    this.sendTempOrder();
+
   }
 
   sendTempOrder() {
@@ -37,9 +41,8 @@ export class RoomComponent implements OnInit {
     this.room.status = 'Always OFF';
   }
 
-  ngOnInit(): void {
-    if (!this.room.isalive) {
-      this.currentOrLast = 'last';
-    }
+  makeChart(roomId) {
+    this.RoomDetail.chacngeChart(1, roomId);
+    this.RoomDetail.isShowDetail = true;
   }
 }

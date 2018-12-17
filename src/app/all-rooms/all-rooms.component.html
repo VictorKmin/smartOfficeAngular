@@ -1,4 +1,9 @@
-<app-room
-  *ngFor=" let room of rooms"
-  [room]="room"
-></app-room>
+<div id="rooms">
+  <app-room
+    *ngFor=" let room of rooms"
+    [room]="room"
+  ></app-room>
+</div>
+<div align="center" id="stat">
+  <app-room-detail></app-room-detail>
+</div>

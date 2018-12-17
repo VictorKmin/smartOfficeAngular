@@ -1,20 +1,18 @@
 <div id={{room.id}} class="room" [ngClass]="{'not-alive': !room.isalive}">
-  <b style="font-size: 25px">ROOM {{room.id}}</b>
-  <br>
-  {{currentOrLast}} room temperature: <b> {{room.room_temp}} °C </b>
-  <br>
-  {{currentOrLast}} heater status: <b>{{room.status}}</b>
-  <br>
+  <div class="mainRoomInfo">
+    <div class="heaterStatus status" style="float: left" [ngClass]="{'not-heat': !room.status}"><span></span></div>
+    <b style="font-size: 25px">ROOM {{room.id}}</b>
+    <div class="status" style="float: right"><span>{{room.room_temp}} °C</span></div>
+
+  </div>
   <br>
   <button class="plusT waves-effect waves-teal" (click)="plusTemp()">+</button>
   <div class="newTemp ">{{room.temp}} °C</div>
-  <button class="minusT waves-effect waves-red" (click)="minusTemp()"> - </button>
+  <button class="minusT waves-effect waves-red" (click)="minusTemp()"> -</button>
   <br>
-  <br>
-  <button class="goodT waves-effect waves-yellow" (click)="sendTempOrder()"> SUBMIT</button>
   <p>
-    <button class="turnOff waves-effect waves-teal" (click)="turnOff()"> TURN OFF</button>
+    <button class="turnOff waves-effect waves-teal" (click)="turnOff()"><span>TURN OFF</span></button>
   <div class="getStat">
-    <button [routerLink]="['room', room.id]" >Get statistic of this room</button>
+    <button class="change" (click)="makeChart(room.id)"><span>Get statistic of this room</span></button>
   </div>
 </div>

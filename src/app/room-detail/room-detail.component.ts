@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FullstatService} from '../fullstat.service';
 import {Chart} from 'chart.js';
@@ -12,8 +12,7 @@ import * as moment from 'moment';
   templateUrl: './room-detail.component.html',
   styleUrls: ['./room-detail.component.css']
 })
-export class RoomDetailComponent implements OnInit {
-
+export class RoomDetailComponent {
   constructor(private route: ActivatedRoute, private  fullStat: FullstatService, private router: Router) {
   }
 
@@ -21,9 +20,11 @@ export class RoomDetailComponent implements OnInit {
   @ViewChild('to', {read: MatInput}) to: MatInput;
 
   time = [];  // YYYY.MM.DD HH:MM:SS
+  humidTime = [];  // YYYY.MM.DD HH:MM:SS
   temp = [];
-  chart: Array<any> = [];
-  roomId = this.route.snapshot.params['id'];
+  humidit = [];
+  tempChart: Array<any> = [];
+  humidityChart: Array<any> = [];
 
   fromYear: any;
   fromMonth: any;
@@ -31,25 +32,20 @@ export class RoomDetailComponent implements OnInit {
   toYear: any;
   toMonth: any;
   toDay: any;
-
-  dateToPass = new Date(Date.now()).toLocaleDateString();
-
-  reset() {
-    this.from.value = '';
-    this.to.value = '';
-  }
+  searchTime: any;
+  isShowDetail: boolean;
 
   /**
    * This method build chart from times and temperature
    */
-  buildChart() {
-    this.chart = new Chart('canvas', {
+  buildChart(time, data, canvasID, chartName) {
+    chartName = new Chart(canvasID, {
       type: 'line',
       data: {
-        labels: this.time,
+        labels: time,
         datasets: [
           {
-            data: this.temp,
+            data: data,
             borderColor: '#1dba9c',
             fill: false
           }
@@ -76,9 +72,6 @@ export class RoomDetailComponent implements OnInit {
             },
             distribution: 'linear'
           }],
-          yAxes: [{
-            display: true,
-          }],
         }
       }
     });
@@ -89,21 +82,34 @@ export class RoomDetailComponent implements OnInit {
    * Take date from datepicker, trim it, build another object
    * Then we insert it into local storage and build chart
    */
-  chacngeChart() {
+  chacngeChart(days, roomId) {
+    console.log(this.isShowDetail);
+    this.isShowDetail = true;
+    console.log(this.isShowDetail);
+
     this.time = [];
     this.temp = [];
-    this.chart = [];
+    this.humidit = [];
+    this.tempChart = [];
+    this.humidTime = [];
 
-    [this.fromDay, this.fromMonth, this.fromYear] = new Date(this.from.value).toLocaleDateString().split('.');
-    [this.toDay, this.toMonth, this.toYear] = new Date(this.to.value).toLocaleDateString().split('.');
+    if (roomId) {
+      localStorage.setItem('roomId', roomId);
+    } else {
+      roomId = localStorage.getItem('roomId');
+    }
+    [this.fromDay, this.fromMonth, this.fromYear] = new Date(Date.now()).toLocaleDateString().split('.');
+    [this.toDay, this.toMonth, this.toYear] = new Date(Date.now()).toLocaleDateString().split('.');
 
+    this.searchTime = new Date(Date.now()).toLocaleTimeString();
+
+    (days) ? this.fromDay = this.fromDay - days : this.fromMonth = this.fromMonth - 1;
     const body = {
-      from: `${this.fromYear}-${this.fromMonth}-${this.fromDay}`,
-      to: `${this.toYear}-${this.toMonth}-${this.toDay}`,
-      roomId: this.roomId
+      from: `${this.fromYear}-${this.fromMonth}-${this.fromDay} ${this.searchTime}`,
+      to: `${this.toYear}-${this.toMonth}-${this.toDay} ${this.searchTime}`,
+      roomId
     };
 
-    localStorage.setItem(`date${this.roomId}`, JSON.stringify(body));
     this.main(body);
   }
 
@@ -112,18 +118,18 @@ export class RoomDetailComponent implements OnInit {
    * Then we push temperature to "temp" array and dates to "time" array
    * @param res - array of statistic from back-end response.
    */
-  private dataController(res: Data[]) {
-    res.forEach(respObject => {
-      this.temp.push(respObject.room_temp);
-      this.time.push(moment(respObject.fulldate, 'YYYY-MM-DD HH:mm:ss'));
+  private dataController(res: Data) {
+    const {humidity, temperature} = res;
+    temperature.forEach(temperatureObject => {
+      this.temp.push(temperatureObject.room_temp);
+      this.time.push(moment(temperatureObject.fulldate, 'YYYY-MM-DD HH:mm:ss'));
+    });
+    humidity.forEach(humidityOnject => {
+      this.humidit.push(humidityOnject.humidity);
+      this.humidTime.push(moment(humidityOnject.fulldate, 'YYYY-MM-DD HH:mm:ss'));
     });
   }
 
-  dosomeaction() {
-    const date = new Date(Date.now());
-    this.dateToPass = date;
-  }
-  
   /**
    * This method checks if we have an error.
    * If error present - we take Error code and render error page
@@ -134,21 +140,13 @@ export class RoomDetailComponent implements OnInit {
       let {success, message: data} = res;
       console.log(data);
       if (!success) {
-        localStorage.clear();
         data = +data.slice(data.length - 2, data.length).trim();
         this.router.navigateByUrl(`/error/${data}`);
       } else {
         this.dataController(data);
-        this.buildChart();
+        this.buildChart(this.time, this.temp, 'tempCanvas', this.tempChart);
+        this.buildChart(this.humidTime, this.humidit, 'humidityCanvas', this.humidityChart);
       }
     });
-  }
-
-  ngOnInit() {
-    let date = localStorage.getItem(`date${this.roomId}`);
-    if (!date) {
-      date = JSON.stringify({roomId: this.roomId});
-    }
-    this.main(JSON.parse(date));
   }
 }

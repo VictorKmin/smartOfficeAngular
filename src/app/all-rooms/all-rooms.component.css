@@ -1,0 +1,10 @@
+#rooms {
+  width: 25%;
+  display: inline-block;
+}
+#stat {
+  width: 73%;
+  vertical-align: top;
+  display: inline-block;
+  margin: 10px;
+}

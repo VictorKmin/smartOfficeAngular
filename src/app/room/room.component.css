@@ -1,11 +1,27 @@
 .room {
-  width: 400px;
+  width: 350px;
   height: 400px;
   background-color: rgba(62, 78, 178, 0.49);
   border: rgb(240, 255, 246) solid 2px;
   text-align: center;
   display: inline-block;
   margin: 10px 10px 10px 10px;
+}
+
+.status {
+  width: 90px;
+  height: 50px;
+  font-size: 20px;
+}
+
+.heaterStatus > span:after {
+  font-size: 30px;
+  content: '\1F525';
+}
+
+.not-heat > span:after {
+  font-size: 30px;
+  content: '\2746';
 }
 
 .room.not-alive {
@@ -23,6 +39,10 @@
   pointer-events: none;
   background-color: #b2bfc0;
   color: gray;
+}
+
+.not-alive .status {
+  content: '\21BB';
 }
 
 .not-alive .goodT {
@@ -44,11 +64,19 @@
   border-radius: 50%;
 }
 
+.plusT:hover {
+  box-shadow: 0px 0px 50px rgba(255, 126, 0, 0.7);
+}
+
 .minusT {
   background-color: rgba(17, 215, 233, 0.66);
   width: 30px;
   height: 30px;
   border-radius: 100%;
+}
+
+.minusT:hover {
+  box-shadow: 0px 0px 50px rgba(233, 230, 227, 0.58);
 }
 
 .goodT {
@@ -58,18 +86,118 @@
   border-radius: 20%;
 }
 
+.goodT span {
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.goodT span:hover {
+  padding-right: 25px;
+}
+
+.goodT:hover {
+  box-shadow: 0px 0px 50px rgba(12, 133, 1, 0.79);
+}
+
+.goodT span:after {
+  font-size: 20px;
+  content: '\2714';
+  position: absolute;
+  opacity: 0;
+  top: -4px;
+  right: -22px;
+  transition: 0.5s;
+  padding-right: 25px;
+}
+
+.goodT span:hover:after {
+  opacity: 1;
+}
+
 .turnOff {
   background-color: rgba(187, 57, 48, 0.78);
 }
 
-.getStat > button {
-  background-color: #20b1b2;
-  width: 50%;
-  height: 50px;
-  color: white;
-  padding: 0px;
+.turnOff:before,
+.turnOff:after {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  transition: .0s, opacity .3s;
 }
 
-.newTemp{
+/* :before */
+
+.turnOff:before {
+  content: '\2716';
+  transform: translate(-150%, 0);
+}
+
+.turnOff:after {
+  content: attr(data-active);
+  transform: translate(150%, 0);
+}
+
+.turnOff:hover span {
+  opacity: 0;
+  transition: .3s;
+}
+
+.turnOff:hover:before,
+.turnOff:active:after {
+  opacity: 1;
+  transform: translate(0, 0);
+  transition-delay: .2s;
+}
+
+/*.getStat > button {*/
+/*cursor: pointer;*/
+/*background-color: #20b1b2;*/
+/*width: 50%;*/
+/*height: 50px;*/
+/*color: white;*/
+/*padding: 0px;*/
+/*}*/
+
+.change {
+  margin: 20px;
+  width: 50%;
+  height: 50px;
+  background-color: #69d669;
+}
+
+.change span {
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.change span:hover {
+  padding-right: 25px;
+}
+
+.change:hover {
+  box-shadow: 0px 0px 50px rgba(12, 120, 1, 0.68);
+}
+
+.change span:after {
+  font-size: 20px;
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: -4px;
+  right: -22px;
+  transition: 0.5s;
+  padding-right: 25px;
+}
+
+.change span:hover:after {
+  opacity: 1;
+}
+
+.newTemp {
   font-size: 20px;
 }

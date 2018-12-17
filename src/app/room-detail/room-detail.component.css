@@ -1,17 +1,52 @@
-#details {
-  width: 100%;
-  height: 80%;
-  background:radial-gradient(ellipse at center, rgba(0, 0, 0, 0.44) 0%, rgba(0, 0, 0, 0.24) 35%, rgba(0, 0, 0, 0) 100%);
+#temperature {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.44) 0%, rgba(0, 0, 0, 0.24) 35%, rgba(0, 0, 0, 0) 100%);
 }
 
-.change {
- background-color: #69d669;
+#humidity {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.44) 0%, rgba(0, 0, 0, 0.24) 35%, rgba(0, 0, 0, 0) 100%);
 }
 
 .reset {
+  width: 120px;
+  height: 40px;
+  background-color: #d6646c;
+  margin: 20px;
+}
 
+.reset span {
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.reset span:hover {
+  padding-right: 25px;
+}
+
+.reset:hover {
+  box-shadow: 0px 0px 50px rgba(152, 59, 62, 0.8);
+}
+
+.reset span:after {
+  font-size: 20px;
+  content: '\21BB';
+  position: absolute;
+  opacity: 0;
+  top: -2px;
+  right: -22px;
+  transition: 0.5s;
+  padding-right: 25px;
+}
+
+.reset span:hover:after {
+  opacity: 1;
 }
 
 .chartSetter {
   text-align: center;
+}
+
+mat-datepicker-toggle:hover {
+  box-shadow: 0px 0px 50px rgba(51, 152, 139, 0.8);
+  transition: 0.5s;
 }

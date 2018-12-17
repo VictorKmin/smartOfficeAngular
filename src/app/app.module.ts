@@ -16,7 +16,7 @@ import {MatFormFieldModule} from '@angular/material';
 import {MatInputModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatNativeDateModule, MatSliderModule} from '@angular/material';
-import { ErrorComponent } from './error/error.component';
+import {ErrorComponent} from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,8 @@ import { ErrorComponent } from './error/error.component';
   providers: [
     FullstatService,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    RoomDetailComponent
   ],
   bootstrap: [AppComponent]
 })

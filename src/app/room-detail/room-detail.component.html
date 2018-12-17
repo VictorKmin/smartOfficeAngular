@@ -1,24 +1,35 @@
-<div class="chartSetter">
-  <mat-form-field>
-    <input #from matInput [matDatepicker]="picker1" placeholder=" " >
-    FROM DATE
-    <mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>
-    <mat-datepicker #picker1></mat-datepicker>
-  </mat-form-field>
-  <br>
-  <mat-form-field>
-    <input #to matInput [matDatepicker]="picker" placeholder=" ">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    TO DATE
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  <br>
-  <button (click)="chacngeChart()" class="change waves-effect waves-purple">Build Chart</button>
-  <br>
-  <button (click)="reset()" class="reset waves-effect waves-teal">Reset</button>
-  <br>
-</div>
+<!--<div class="chartSetter">-->
+<!--<mat-form-field>-->
+<!--<input #from matInput [matDatepicker]="picker1" placeholder=" " >-->
+<!--FROM DATE-->
+<!--<mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>-->
+<!--<mat-datepicker #picker1></mat-datepicker>-->
+<!--</mat-form-field>-->
+<!--<br>-->
+<!--<mat-form-field>-->
+<!--<input #to matInput [matDatepicker]="picker" placeholder=" ">-->
+<!--<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
+<!--TO DATE-->
+<!--<mat-datepicker #picker></mat-datepicker>-->
+<!--</mat-form-field>-->
+<!--<br>-->
+<!--<button (click)="reset()" class="reset waves-effect waves-yellow"><span>Reset</span></button>-->
+<!--<button (click)="chacngeChart()" class="change waves-effect waves-purple"><span>Build Chart</span></button>-->
+<!--<br>-->
+<!--</div>-->
 
-<div *ngIf="chart" id="details">
-  <canvas id="canvas">{{ chart }}</canvas>
+
+<div  class="roomStat"[ngClass]="{'hide': isShowDetail}">
+  <div class="buttons">
+    <button (click)="chacngeChart(1)">ONE DAY</button>
+    <button (click)="chacngeChart(2)">TWO DAYS</button>
+    <button (click)="chacngeChart(7)">ONE WEEK</button>
+    <button (click)="chacngeChart()">ONE MONTH</button>
+  </div>
+  <div *ngIf="tempChart" id="temperature">
+    <canvas id="tempCanvas">{{ tempChart }}</canvas>
+  </div>
+  <div *ngIf="humidityChart" id="humidity">
+    <canvas id="humidityCanvas">{{ humidityChart }}</canvas>
+  </div>
 </div>
