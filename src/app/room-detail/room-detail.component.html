@@ -21,15 +21,18 @@
 
 <div [ngClass]="{'hide': !isShowDetail}">
   <div class="buttons">
-    <button (click)="chacngeChart(1)">ONE DAY</button>
-    <button (click)="chacngeChart(2)">TWO DAYS</button>
-    <button (click)="chacngeChart(7)">ONE WEEK</button>
-    <button (click)="chacngeChart()">ONE MONTH</button>
+    <button (click)="chacngeChart(1)" class="changeDay"><span>ONE DAY</span></button>
+    <button (click)="chacngeChart(2)" class="changeDay"><span>TWO DAYS</span></button>
+    <button (click)="chacngeChart(7)" class="changeDay"><span>ONE WEEK</span></button>
+    <button (click)="chacngeChart()" class="changeDay"><span>ONE MONTH</span></button>
   </div>
-  <div *ngIf="tempChart" id="temperature">
-    <canvas id="tempCanvas" style="width: 100%; height: 400px">{{ tempChart }}</canvas>
+  <div *ngIf="tempChart">
+    <canvas id="temperature" style="width: 100%; height: 400px">{{ tempChart }}</canvas>
   </div>
-  <div *ngIf="humidityChart" id="humidity">
-    <canvas id="humidityCanvas" style="width: 100%; height: 400px">{{ humidityChart }}</canvas>
+  <div *ngIf="humidityChart">
+    <canvas id="humidity" style="width: 100%; height: 400px">{{ humidityChart }}</canvas>
+  </div>
+  <div *ngIf="co2Chart">
+    <canvas id="co2" style="width: 100%; height: 400px">{{ co2Chart }}</canvas>
   </div>
 </div>

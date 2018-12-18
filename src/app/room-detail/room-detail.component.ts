@@ -6,6 +6,7 @@ import {Data} from './Data';
 import {Response} from '../Response';
 import {MatInput} from '@angular/material';
 import * as moment from 'moment';
+import {Local} from 'protractor/built/driverProviders';
 
 @Component({
   selector: 'app-room-detail',
@@ -21,11 +22,16 @@ export class RoomDetailComponent implements OnChanges {
   @ViewChild('to', {read: MatInput}) to: MatInput;
 
   time = [];  // YYYY.MM.DD HH:MM:SS
-  humidTime = [];  // YYYY.MM.DD HH:MM:SS
   temp = [];
-  humidit = [];
   tempChart: Array<any> = [];
+
+  humidTime = [];  // YYYY.MM.DD HH:MM:SS
+  humidit = [];
   humidityChart: Array<any> = [];
+
+  co2Time = [];  // YYYY.MM.DD HH:MM:SS
+  co2 = [];
+  co2Chart: Array<any> = [];
 
   fromYear: any;
   fromMonth: any;
@@ -37,7 +43,7 @@ export class RoomDetailComponent implements OnChanges {
   isShowDetail = false;
 
   ngOnChanges(changes) {
-    console.log(this.roomId)
+    console.log(this.roomId);
     if ('roomId' in changes && this.roomId) {
       this.isShowDetail = true;
       this.chacngeChart(1, this.roomId);
@@ -54,6 +60,7 @@ export class RoomDetailComponent implements OnChanges {
         labels: time,
         datasets: [
           {
+            label: canvasID,
             data: data,
             borderColor: '#1dba9c',
             fill: false
@@ -62,12 +69,15 @@ export class RoomDetailComponent implements OnChanges {
       },
       options: {
         elements: {
+          // point: {
+          //   radius: 1
+          // },
           line: {
             tension: .15, // disables bezier curves
           }
         },
         legend: {
-          display: false
+          display: true,
         },
         // https://codepen.io/shivabhusal/pen/ayyVeL?editors=1010 - how I do this
         scales: {
@@ -94,15 +104,20 @@ export class RoomDetailComponent implements OnChanges {
   chacngeChart(days, roomId) {
     this.time = [];
     this.temp = [];
-    this.humidit = [];
     this.tempChart = [];
+    this.humidit = [];
     this.humidTime = [];
+    this.humidityChart = [];
+    this.co2Time = [];
+    this.co2 = [];
+    this.co2Chart = [];
 
     if (roomId) {
       localStorage.setItem('roomId', roomId);
     } else {
       roomId = localStorage.getItem('roomId');
     }
+
     [this.fromDay, this.fromMonth, this.fromYear] = new Date(Date.now()).toLocaleDateString().split('.');
     [this.toDay, this.toMonth, this.toYear] = new Date(Date.now()).toLocaleDateString().split('.');
 
@@ -124,7 +139,7 @@ export class RoomDetailComponent implements OnChanges {
    * @param res - array of statistic from back-end response.
    */
   private dataController(res: Data) {
-    const {humidity, temperature} = res;
+    const {humidity, temperature, co2} = res;
     temperature.forEach(temperatureObject => {
       this.temp.push(temperatureObject.room_temp);
       this.time.push(moment(temperatureObject.fulldate, 'YYYY-MM-DD HH:mm:ss'));
@@ -132,6 +147,10 @@ export class RoomDetailComponent implements OnChanges {
     humidity.forEach(humidityOnject => {
       this.humidit.push(humidityOnject.humidity);
       this.humidTime.push(moment(humidityOnject.fulldate, 'YYYY-MM-DD HH:mm:ss'));
+    });
+    co2.forEach(co2Object => {
+      this.co2.push(co2Object.co2);
+      this.co2Time.push(moment(co2Object.fulldate, 'YYYY-MM-DD HH:mm:ss'));
     });
   }
 
@@ -149,8 +168,9 @@ export class RoomDetailComponent implements OnChanges {
         this.router.navigateByUrl(`/error/${data}`);
       } else {
         this.dataController(data);
-        this.buildChart(this.time, this.temp, 'tempCanvas', this.tempChart);
-        this.buildChart(this.humidTime, this.humidit, 'humidityCanvas', this.humidityChart);
+        this.buildChart(this.time, this.temp, 'temperature', this.tempChart);
+        this.buildChart(this.humidTime, this.humidit, 'humidity', this.humidityChart);
+        this.buildChart(this.co2Time, this.co2, 'co2', this.co2Chart);
       }
     });
   }

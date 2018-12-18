@@ -27,14 +27,16 @@ export class RoomComponent {
 
   sendTempOrder() {
     this.http.get
-    (`http://192.168.0.131:5000/api/settemp?id=${this.room.id}&temp=${this.room.temp}`).subscribe(value => {
+    // (`http://192.168.0.131:5000/api/settemp?id=${this.room.id}&temp=${this.room.temp}`).subscribe(value => {
+    (`http://192.168.1.120:5000/api/settemp?id=${this.room.id}&temp=${this.room.temp}`).subscribe(value => {
       console.log(value);
     });
   }
 
   turnOff() {
     this.http.get
-    (`http://192.168.0.131:5000/api/settemp?id=${this.room.id}&temp=0`).subscribe(value => {
+    // (`http://192.168.0.131:5000/api/settemp?id=${this.room.id}&temp=0`).subscribe(value => {
+    (`http://192.168.1.120:5000/api/settemp?id=${this.room.id}&temp=0`).subscribe(value => {
       console.log(value);
     });
     this.room.status = 'Always OFF';
