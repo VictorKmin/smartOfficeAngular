@@ -2,8 +2,9 @@
   <app-room
     *ngFor=" let room of rooms"
     [room]="room"
+    (chooseRoom)="selectRoom($event)"
   ></app-room>
 </div>
 <div align="center" id="stat">
-  <app-room-detail></app-room-detail>
+  <app-room-detail [roomId]="selectedRoomId"></app-room-detail>
 </div>

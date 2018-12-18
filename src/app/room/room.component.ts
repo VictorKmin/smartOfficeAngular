@@ -1,6 +1,5 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {RoomDetailComponent} from '../room-detail/room-detail.component';
 
 @Component({
   selector: 'app-room',
@@ -9,11 +8,11 @@ import {RoomDetailComponent} from '../room-detail/room-detail.component';
 })
 export class RoomComponent {
   constructor(private http: HttpClient,
-              private RoomDetail: RoomDetailComponent
-  ) {
+                ) {
   }
 
   @Input() room;
+  @Output() chooseRoom = new EventEmitter<any>();
 
   plusTemp() {
     this.room.temp++;
@@ -42,7 +41,9 @@ export class RoomComponent {
   }
 
   makeChart(roomId) {
-    this.RoomDetail.chacngeChart(1, roomId);
-    this.RoomDetail.isShowDetail = true;
+    console.log(roomId);
+    this.chooseRoom.emit(roomId);
+    // this.RoomDetail.chacngeChart(1, roomId);
   }
+
 }

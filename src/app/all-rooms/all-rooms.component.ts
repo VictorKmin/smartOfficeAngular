@@ -14,7 +14,7 @@ export class AllRoomsComponent implements OnInit {
   }
 
   rooms: Object = [];
-
+  selectedRoomId;
   ngOnInit() {
     this.roomService.getRooms().subscribe((response: Response) => {
       let {success, message: data} = response;
@@ -26,6 +26,11 @@ export class AllRoomsComponent implements OnInit {
         this.rooms = data;
       }
     });
+  }
+
+  selectRoom(id) {
+    console.log(id);
+    this.selectedRoomId = id;
   }
 }
 

@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FullstatService} from '../fullstat.service';
 import {Chart} from 'chart.js';
@@ -12,10 +12,11 @@ import * as moment from 'moment';
   templateUrl: './room-detail.component.html',
   styleUrls: ['./room-detail.component.css']
 })
-export class RoomDetailComponent {
+export class RoomDetailComponent implements OnChanges {
   constructor(private route: ActivatedRoute, private  fullStat: FullstatService, private router: Router) {
   }
 
+  @Input() roomId;
   @ViewChild('from', {read: MatInput}) from: MatInput;
   @ViewChild('to', {read: MatInput}) to: MatInput;
 
@@ -33,7 +34,15 @@ export class RoomDetailComponent {
   toMonth: any;
   toDay: any;
   searchTime: any;
-  isShowDetail: boolean;
+  isShowDetail = false;
+
+  ngOnChanges(changes) {
+    console.log(this.roomId)
+    if ('roomId' in changes && this.roomId) {
+      this.isShowDetail = true;
+      this.chacngeChart(1, this.roomId);
+    }
+  }
 
   /**
    * This method build chart from times and temperature
@@ -83,10 +92,6 @@ export class RoomDetailComponent {
    * Then we insert it into local storage and build chart
    */
   chacngeChart(days, roomId) {
-    console.log(this.isShowDetail);
-    this.isShowDetail = true;
-    console.log(this.isShowDetail);
-
     this.time = [];
     this.temp = [];
     this.humidit = [];
