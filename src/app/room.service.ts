@@ -10,8 +10,8 @@ export class RoomService {
   }
 
   getRooms() {
-    // return this.http.get('http://192.168.0.131:5000/stat');
-    return this.http.get('http://192.168.1.120:5000/stat');
+    return this.http.get('http://192.168.0.131:5000/stat');
+    // return this.http.get('http://192.168.1.120:5000/stat');
   }
 
 }

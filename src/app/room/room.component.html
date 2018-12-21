@@ -1,16 +1,35 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
 <div id={{room.id}} class="room" [ngClass]="{'not-alive': !room.isalive}">
-  <div class="mainRoomInfo">
-    <div class="heaterStatus" style="float: left" [ngClass]="{'not-heat': !room.status}"><span></span></div>
-    <b style="font-size: 25px">ROOM {{room.id}}</b>
-    <div class="temperatureStatus" style="float: right"><span>{{room.room_temp}} °C</span></div>
+  <div style="display: inline-block; float: left; cursor: pointer; margin-left: 4px" (click)="changeTemp()">
+    <div class="heaterStatus" [ngClass]="{'not-heat': !room.heater_status}">
+      <span></span>
+    </div>
+    <br>
+    <div class="isAuto" [ngClass]="{'auto': !room.auto_mode}" style="float: left">
+      <span> Auto: </span>
+    </div>
+  </div>
+  <b style="font-size: 25px;">ROOM {{room.id}}</b>
+  <div class="buildChart" (click)="makeChart(room.id)">
+    <i class="fas fa-chart-line"></i>
   </div>
   <br>
-  <div class="plusT waves-effect" (click)="plusTemp()"><span></span></div>
-  <div class="newTemp ">{{room.temp}} °C</div>
-  <div class="minusT waves-effect" (click)="minusTemp()"><span></span></div>
+  <div align="center">
+    <div class="changeTemp">
+      <i class="fas fa-chevron-up" (click)="plusTemp()" style="margin-right: 55px;"></i>
+    </div>
+    <div class="newTemp">{{room.temp}} °</div>
+    <div class="changeTemp">
+      <i class="fas fa-chevron-up" (click)="minusTemp()" style="transform: rotate(180deg);"></i>
+    </div>
+  </div>
   <br>
-  <button class="turnOff waves-effect waves-teal" (click)="turnOff()"><span>TURN OFF</span></button>
-  <div>
-    <button class="change" (click)="makeChart(room.id)"><span>Get statistic</span></button>
+  <div class="roomStat">
+    <div class="temperatureStatus">
+      <i class="fas fa-thermometer-half"></i>  {{room.room_temp}} °C
+    </div>
+    <div class="humidityStatus"><span>  {{room.humidity}} %</span></div>
   </div>
 </div>

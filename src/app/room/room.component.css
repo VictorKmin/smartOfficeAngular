@@ -1,7 +1,7 @@
 .room {
   color: #b4b4b4;
-  width: 300px;
-  height: 400px;
+  width: 240px;
+  height: 250px;
   background-color: rgba(8, 8, 49, 0.72);
   border: rgb(240, 255, 246) solid 2px;
   text-align: center;
@@ -9,27 +9,49 @@
   margin: 10px 10px 10px 10px;
 }
 
-.temperatureStatus > span {
-  padding: 10px;
-  font-size: 20px;
+.temperatureStatus {
+  display: inline-block;
 }
-.temperatureStatus > span:hover {
+
+.temperatureStatus:hover {
   color: rgba(0, 200, 64, 0.75);
   transition: .5s;
 }
 
-.heaterStatus {
-  font-size: 30px;
-  width: 90px;
+.humidityStatus span:before {
+  content: '\2614';;
+}
+
+.humidityStatus {
   display: inline-block;
 }
+
+.humidityStatus > span {
+  padding: 10px;
+}
+
+.humidityStatus > span:hover {
+  color: rgba(0, 162, 200, 0.75);
+  transition: .5s;
+}
+
+.heaterStatus {
+  float: left;
+  cursor: pointer;
+  /*width: 30px;*/
+  height: 37px;
+}
+.heaterStatus span {
+  font-size: 27px;
+  margin-left: 8px;
+}
+
 .heaterStatus > span:hover {
   transition: 1s;
   color: coral;
 }
 
 .heaterStatus > span:after {
-  margin: 0px 0px 0px -30px;
   content: '\1F525';
 }
 
@@ -58,129 +80,68 @@
   background-color: #7a7a7a;
 }
 
-.not-alive .change {
+.not-alive .buildChart {
   pointer-events: all;
 }
 
-.plusT {
-  width: 50px;
-  height: 70px;
-  border-radius: 50%;
-}
-
-.plusT > span:after {
-  content: '\2303';
-  font-size: 80px;
-  font-weight: bolder;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.plusT:hover {
-  color: #dea61d;
-  transition: 1s;
-  top: -2px;
-}
-
-.minusT {
-  transform: rotate(180deg);
-  width: 50px;
-  height: 70px;
-  border-radius: 100%;
-}
-
-.minusT > span:after {
-  content: '\2303';
-  font-size: 80px;
-  font-weight: bolder;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.minusT:hover {
-  color: #0cdecb;
-  top: 2px;
-  transition: 1s;
-}
-
-.turnOff {
-  background-color: rgba(187, 57, 48, 0.78);
-}
-
-.turnOff:before,
-.turnOff:after {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  opacity: 0;
-  transition: .0s, opacity .3s;
-}
-
-.turnOff:before {
-  content: '\2716';
-  transform: translate(-150%, 0);
-}
-
-.turnOff:after {
-  content: attr(data-active);
-  transform: translate(150%, 0);
-}
-
-.turnOff:hover span {
-  opacity: 0;
-  transition: .3s;
-}
-
-.turnOff:hover:before,
-.turnOff:active:after {
-  opacity: 1;
-  transform: translate(0, 0);
-  transition-delay: .2s;
-}
-
-.change {
-  color: #b4b4b4;
-  margin: 20px;
-  width: 50%;
+.changeTemp {
   height: 50px;
-  background-color: #024a4d;
 }
 
-.change span {
-  display: inline-block;
-  position: relative;
-  transition: 0.5s;
+.changeTemp i {
+  cursor: pointer;
+  height: 50px;
+  font-size: 50px;
 }
 
-.change span:hover {
-  padding-right: 25px;
+.changeTemp i:hover {
+  color: #b55b3b;
+  transition: 1s;
 }
 
-.change:hover {
-  box-shadow: 0px 0px 50px rgba(1, 99, 120, 0.68);
+.buildChart {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+  margin-top: -5px;
+  font-size: 40px;
+  float: right;
+  cursor: pointer;
 }
 
-.change span:after {
-  font-size: 20px;
-  content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: -4px;
-  right: -22px;
-  transition: 0.5s;
-  padding-right: 25px;
+.buildChart:hover {
+  color: #0c917f;
+  transition: 1s;
 }
 
-.change span:hover:after {
-  opacity: 1;
+.buildChart span:after {
+  content: '\1F4C8';
 }
 
 .newTemp {
   font-size: 40px;
+  height: 62px;
+  width: 90px;
 }
 .newTemp:hover {
-  font-weight: bolder;
-  transition: .3s;
   color: white;
+  transition: 1s;
+}
+
+.roomStat {
+  float: left;
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.isAuto {
+  float: left;
+}
+
+.isAuto span:after {
+  content: '\2714';
+}
+
+.auto span:after {
+  content: '\2716';
 }

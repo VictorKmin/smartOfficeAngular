@@ -68,10 +68,11 @@ export class RoomDetailComponent implements OnChanges {
         ]
       },
       options: {
+        responsive: false,
         elements: {
-          // point: {
-          //   radius: 1
-          // },
+          point: {
+            radius: 2
+          },
           line: {
             tension: .15, // disables bezier curves
           }
@@ -117,16 +118,8 @@ export class RoomDetailComponent implements OnChanges {
     } else {
       roomId = localStorage.getItem('roomId');
     }
-
-    [this.fromDay, this.fromMonth, this.fromYear] = new Date(Date.now()).toLocaleDateString().split('.');
-    [this.toDay, this.toMonth, this.toYear] = new Date(Date.now()).toLocaleDateString().split('.');
-
-    this.searchTime = new Date(Date.now()).toLocaleTimeString();
-
-    (days) ? this.fromDay = this.fromDay - days : this.fromMonth = this.fromMonth - 1;
     const body = {
-      from: `${this.fromYear}-${this.fromMonth}-${this.fromDay} ${this.searchTime}`,
-      to: `${this.toYear}-${this.toMonth}-${this.toDay} ${this.searchTime}`,
+      countOfDays: days,
       roomId
     };
 
