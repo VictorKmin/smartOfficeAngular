@@ -12,11 +12,12 @@ import {AppRoutingModule} from './app-routing.module';
 import {FormsModule} from '@angular/forms';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatFormFieldModule} from '@angular/material';
-import {MatInputModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatNativeDateModule, MatSliderModule} from '@angular/material';
 import {ErrorComponent} from './error/error.component';
+
+import {SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
+
+const config: SocketIoConfig = {url: 'http://192.168.0.131:5000', options: {}};
 
 @NgModule({
   declarations: [
@@ -32,19 +33,15 @@ import {ErrorComponent} from './error/error.component';
     AppRoutingModule,
     RouterModule,
     FormsModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
 
-    MatNativeDateModule,
-    MatSliderModule,
     BrowserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+
+    SocketIoModule.forRoot(config)
   ],
   providers: [
     FullstatService,
     MatDatepickerModule,
-    MatNativeDateModule,
     RoomDetailComponent
   ],
   bootstrap: [AppComponent]

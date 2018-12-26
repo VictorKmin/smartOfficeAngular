@@ -29,13 +29,11 @@ export class RoomComponent {
     if (this.room.auto_mode) {
       this.http.get
       (`http://192.168.0.131:5000/api/settemp?id=${this.room.id}&temp=0`).subscribe(value => {
-        // (`http://192.168.1.120:5000/api/settemp?id=${this.room.id}&temp=0`).subscribe(value => {
         console.log(value);
       });
     } else {
       this.http.get
       (`http://192.168.0.131:5000/api/settemp?id=${this.room.id}&temp=${this.room.temp}`).subscribe(value => {
-        // (`http://192.168.1.120:5000/api/settemp?id=${this.room.id}&temp=${tempToSupport}`).subscribe(value => {
         console.log(value);
       });
     }

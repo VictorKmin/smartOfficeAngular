@@ -25,6 +25,7 @@
     "chart.js": "latest",
     "core-js": "^2.5.4",
     "moment": "^2.22.2",
+    "ngx-socket-io": "^2.1.1",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
   },

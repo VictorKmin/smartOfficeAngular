@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {RoomService} from '../room.service';
-import {Response} from '../Response';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-all-rooms',
@@ -10,21 +8,16 @@ import {Router} from '@angular/router';
 })
 export class AllRoomsComponent implements OnInit {
 
-  constructor(private roomService: RoomService, private router: Router) {
+  constructor(private roomService: RoomService) {
   }
 
-  rooms: Object = [];
+  rooms = this.roomService.ev;
   selectedRoomId;
+
   ngOnInit() {
-    this.roomService.getRooms().subscribe((response: Response) => {
-      let {success, message: data} = response;
-      console.log(response);
-      if (!success) {
-        data = +data.slice(data.length - 2, data.length).trim();
-        this.router.navigateByUrl(`/error/${data}`);
-      } else {
-        this.rooms = data;
-      }
+    this.roomService.firstLoad().subscribe(doc => {
+      this.rooms = doc;
+      console.log(doc);
     });
   }
 

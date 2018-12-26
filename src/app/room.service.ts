@@ -1,17 +1,19 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {Socket} from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
 
-  constructor(private http: HttpClient) {
+  constructor(private socket: Socket) {
   }
 
-  getRooms() {
-    return this.http.get('http://192.168.0.131:5000/stat');
-    // return this.http.get('http://192.168.1.120:5000/stat');
+  ev = this.socket.fromEvent('rooms');
+
+  firstLoad() {
+    this.socket.emit('getRoom');
+    return this.socket.fromEvent('rooms');
   }
 
 }

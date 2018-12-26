@@ -1,12 +1,10 @@
-import {Component, Input, OnChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FullstatService} from '../fullstat.service';
 import {Chart} from 'chart.js';
 import {Data} from './Data';
 import {Response} from '../Response';
-import {MatInput} from '@angular/material';
 import * as moment from 'moment';
-import {Local} from 'protractor/built/driverProviders';
 
 @Component({
   selector: 'app-room-detail',
@@ -18,8 +16,6 @@ export class RoomDetailComponent implements OnChanges {
   }
 
   @Input() roomId;
-  @ViewChild('from', {read: MatInput}) from: MatInput;
-  @ViewChild('to', {read: MatInput}) to: MatInput;
 
   time = [];  // YYYY.MM.DD HH:MM:SS
   temp = [];
@@ -33,13 +29,6 @@ export class RoomDetailComponent implements OnChanges {
   co2 = [];
   co2Chart: Array<any> = [];
 
-  fromYear: any;
-  fromMonth: any;
-  fromDay: any;
-  toYear: any;
-  toMonth: any;
-  toDay: any;
-  searchTime: any;
   isShowDetail = false;
 
   ngOnChanges(changes) {
@@ -154,17 +143,12 @@ export class RoomDetailComponent implements OnChanges {
    */
   main(date) {
     this.fullStat.getStatisticByDate(date).subscribe((res: Response) => {
-      let {success, message: data} = res;
+      const {message: data} = res;
       console.log(data);
-      if (!success) {
-        data = +data.slice(data.length - 2, data.length).trim();
-        this.router.navigateByUrl(`/error/${data}`);
-      } else {
-        this.dataController(data);
-        this.buildChart(this.time, this.temp, 'temperature', this.tempChart);
-        this.buildChart(this.humidTime, this.humidit, 'humidity', this.humidityChart);
-        this.buildChart(this.co2Time, this.co2, 'co2', this.co2Chart);
-      }
+      this.dataController(data);
+      this.buildChart(this.time, this.temp, 'temperature', this.tempChart);
+      this.buildChart(this.humidTime, this.humidit, 'humidity', this.humidityChart);
+      this.buildChart(this.co2Time, this.co2, 'co2', this.co2Chart);
     });
   }
 }
