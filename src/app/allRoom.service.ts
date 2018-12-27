@@ -4,16 +4,16 @@ import {Socket} from 'ngx-socket-io';
 @Injectable({
   providedIn: 'root'
 })
-export class RoomService {
+export class AllRoomService {
 
   constructor(private socket: Socket) {
   }
 
-  changeTemp(roomId, temp) {
-    this.socket.emit('changeTemp', {roomId, temp});
-  }
+  ev = this.socket.fromEvent('rooms');
 
-  getTemp() {
-    return this.socket.fromEvent('oneRoom');
+  firstLoad() {
+    this.socket.emit('getRoom');
+    return this.socket.fromEvent('rooms');
   }
 }
+

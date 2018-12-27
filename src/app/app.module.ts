@@ -7,6 +7,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 import {AllRoomsComponent} from './all-rooms/all-rooms.component';
 import {FullstatService} from './fullstat.service';
+import {RoomService} from './room.service';
 import {RoomDetailComponent} from './room-detail/room-detail.component';
 import {AppRoutingModule} from './app-routing.module';
 import {FormsModule} from '@angular/forms';
@@ -42,7 +43,8 @@ const config: SocketIoConfig = {url: 'http://192.168.0.131:5000', options: {}};
   providers: [
     FullstatService,
     MatDatepickerModule,
-    RoomDetailComponent
+    RoomDetailComponent,
+    RoomService
   ],
   bootstrap: [AppComponent]
 })

@@ -41,6 +41,7 @@
   /*width: 30px;*/
   height: 37px;
 }
+
 .heaterStatus span {
   font-size: 27px;
   margin-left: 8px;
@@ -114,15 +115,12 @@
   transition: 1s;
 }
 
-.buildChart span:after {
-  content: '\1F4C8';
-}
-
 .newTemp {
   font-size: 40px;
   height: 62px;
   width: 90px;
 }
+
 .newTemp:hover {
   color: white;
   transition: 1s;
@@ -144,4 +142,33 @@
 
 .auto span:after {
   content: '\2716';
+}
+
+.heater {
+  display: inline-block;
+  float: left;
+  cursor: pointer;
+  margin-left: 4px
+}
+
+.tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  font-size: 15px;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.heater:hover .tooltiptext {
+  visibility: visible;
+}
+
+.buildChart:hover .tooltiptext {
+  visibility: visible;
 }

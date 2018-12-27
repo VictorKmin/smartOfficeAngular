@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RoomService} from '../room.service';
+import {AllRoomService} from '../allRoom.service';
 
 @Component({
   selector: 'app-all-rooms',
@@ -8,10 +8,11 @@ import {RoomService} from '../room.service';
 })
 export class AllRoomsComponent implements OnInit {
 
-  constructor(private roomService: RoomService) {
+  constructor(private roomService: AllRoomService) {
   }
 
-  rooms = this.roomService.ev;
+  rooms = this.roomService.ev.subscribe();
+
   selectedRoomId;
 
   ngOnInit() {
