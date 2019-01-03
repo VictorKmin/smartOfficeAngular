@@ -2,7 +2,7 @@
       integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
 <div id={{room.id}} class="room" [ngClass]="{'not-alive': !room.isalive}">
-  <div class="heater" (click)="changeTemp()">
+  <div class="heater" (click)="changeStatus()">
     <div class="heaterStatus" [ngClass]="{'not-heat': !room.heater_status}">
       <span></span>
     </div>
@@ -19,12 +19,14 @@
   </div>
   <br>
   <div align="center">
-    <div class="changeTemp">
+    <div class="changeTemp"  [ngClass]="{'off': !room.auto_mode}">
       <i class="fas fa-chevron-up" (click)="plusTemp()" style="margin-right: 55px;"></i>
+      <span class="tooltiptext">Auto/Off</span>
     </div>
     <div class="newTemp">{{room.temp}} °</div>
-    <div class="changeTemp">
+    <div class="changeTemp"  [ngClass]="{'off': !room.auto_mode}">
       <i class="fas fa-chevron-up" (click)="minusTemp()" style="transform: rotate(180deg);"></i>
+      <span class="tooltiptext">Auto/Off</span>
     </div>
   </div>
   <br>

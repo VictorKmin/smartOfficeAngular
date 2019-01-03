@@ -9,8 +9,6 @@ export class AllRoomService {
   constructor(private socket: Socket) {
   }
 
-  ev = this.socket.fromEvent('rooms');
-
   firstLoad() {
     this.socket.emit('getRoom');
     return this.socket.fromEvent('rooms');

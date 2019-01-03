@@ -11,7 +11,7 @@ export class AllRoomsComponent implements OnInit {
   constructor(private roomService: AllRoomService) {
   }
 
-  rooms = this.roomService.ev.subscribe();
+  rooms: Array<any> = [];
 
   selectedRoomId;
 

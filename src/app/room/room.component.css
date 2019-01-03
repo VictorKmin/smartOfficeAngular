@@ -38,7 +38,6 @@
 .heaterStatus {
   float: left;
   cursor: pointer;
-  /*width: 30px;*/
   height: 37px;
 }
 
@@ -98,6 +97,11 @@
 .changeTemp i:hover {
   color: #b55b3b;
   transition: 1s;
+}
+
+.changeTemp.off {
+  pointer-events: none;
+  color: #6e6e6e;
 }
 
 .buildChart {
@@ -160,7 +164,6 @@
   border-radius: 6px;
   padding: 5px 0;
   font-size: 15px;
-  /* Position the tooltip */
   position: absolute;
   z-index: 1;
 }

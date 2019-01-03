@@ -8,6 +8,7 @@ import {RoomService} from '../room.service';
   styleUrls: ['./room.component.css']
 })
 export class RoomComponent implements OnInit {
+// export class RoomComponent {
   constructor(private http: HttpClient, private roomService: RoomService) {
   }
 
@@ -25,7 +26,7 @@ export class RoomComponent implements OnInit {
   }
 
   changeTemp() {
-    const temp = this.room.auto_mode ? 0 : this.room.temp;
+    const temp = !this.room.auto_mode ? 0 : this.room.temp;
     this.roomService.changeTemp(this.room.id, temp);
   }
 
@@ -35,14 +36,19 @@ export class RoomComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.roomService.getTemp()
-      .subscribe(room => {
-        if (this.room.id === room.id) {
-          this.room.auto_mode = room.auto_mode;
-          this.room.heater_status = room.heater_status;
-          this.room.humidity = room.humidity;
-          this.room.room_temp = room.room_temp;
-        }
-      });
+      this.roomService.getTemp()
+        .subscribe(room => {
+          if (this.room.id === room.id) {
+            console.log(room);
+            this.room.heater_status = room.heater_status;
+            this.room.humidity = room.humidity;
+            this.room.room_temp = room.room_temp;
+          }
+        });
+  }
+
+  changeStatus() {
+    this.room.auto_mode = !this.room.auto_mode;
+    this.changeTemp();
   }
 }
