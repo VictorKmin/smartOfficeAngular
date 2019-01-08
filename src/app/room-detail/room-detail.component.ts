@@ -1,9 +1,11 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FullstatService} from '../fullstat.service';
 import {Chart} from 'chart.js';
 import {Data} from './Data';
 import * as moment from 'moment';
+import {Subscription} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-room-detail',
@@ -11,9 +13,6 @@ import * as moment from 'moment';
   styleUrls: ['./room-detail.component.css']
 })
 export class RoomDetailComponent implements OnChanges {
-  constructor(private route: ActivatedRoute, private  fullStat: FullstatService) {
-  }
-
   @Input() roomId;
   time = [];  // YYYY.MM.DD HH:MM:SS
   temp = [];
@@ -29,6 +28,11 @@ export class RoomDetailComponent implements OnChanges {
 
   isShowDetail = false;
 
+  charts = {};
+
+  constructor(private route: ActivatedRoute, private  fullStat: FullstatService) {
+  }
+
   ngOnChanges(changes) {
     if ('roomId' in changes && this.roomId) {
       this.isShowDetail = true;
@@ -40,7 +44,10 @@ export class RoomDetailComponent implements OnChanges {
    * This method build chart from times and temperature
    */
   buildChart(time, data, canvasID) {
-    Chart.Line(canvasID, {
+    if (canvasID in this.charts) {
+      this.charts[canvasID].destroy();
+    }
+    this.charts[canvasID] = Chart.Line(canvasID, {
       data: {
         labels: time,
         datasets: [
@@ -73,6 +80,7 @@ export class RoomDetailComponent implements OnChanges {
         }
       }
     });
+    console.log(this.charts);
   }
 
   /**
@@ -132,15 +140,17 @@ export class RoomDetailComponent implements OnChanges {
    * @param date - date from LocalStorage
    */
   main(date) {
+    this.fullStat.getStatisticByDate(date)
+      .pipe(take(1))
+      .subscribe(res => {
+        console.log(res);
+        this.dataController(res.message);
+        this.buildChart(this.time, this.temp, 'temperature');
+        this.buildChart(this.humidTime, this.humidit, 'humidity');
+        this.buildChart(this.co2Time, this.co2, 'co2');
+      });
 
-    const data = this.fullStat.getStatisticByDate(date);
-    console.log(data);
-
-    this.dataController(data);
-
-    this.buildChart(this.time, this.temp, 'temperature');
-    this.buildChart(this.humidTime, this.humidit, 'humidity');
-    this.buildChart(this.co2Time, this.co2, 'co2');
 
   }
+
 }
