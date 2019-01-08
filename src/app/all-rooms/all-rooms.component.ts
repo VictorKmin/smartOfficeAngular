@@ -11,7 +11,7 @@ export class AllRoomsComponent implements OnInit {
   constructor(private roomService: AllRoomService) {
   }
 
-  rooms: Array<any> = [];
+  rooms: any;
 
   selectedRoomId;
 
@@ -23,7 +23,6 @@ export class AllRoomsComponent implements OnInit {
   }
 
   selectRoom(id) {
-    console.log(id);
     this.selectedRoomId = id;
   }
 }

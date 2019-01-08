@@ -8,11 +8,10 @@ import {RoomService} from '../room.service';
   styleUrls: ['./room.component.css']
 })
 export class RoomComponent implements OnInit {
-// export class RoomComponent {
   constructor(private http: HttpClient, private roomService: RoomService) {
   }
 
-  @Input() room;
+  @Input() room: any;
   @Output() chooseRoom = new EventEmitter<any>();
 
   plusTemp() {
@@ -31,20 +30,20 @@ export class RoomComponent implements OnInit {
   }
 
   makeChart(roomId) {
-    console.log(roomId);
     this.chooseRoom.emit(roomId);
   }
 
   ngOnInit(): void {
-      this.roomService.getTemp()
-        .subscribe(room => {
-          if (this.room.id === room.id) {
-            console.log(room);
-            this.room.heater_status = room.heater_status;
-            this.room.humidity = room.humidity;
-            this.room.room_temp = room.room_temp;
-          }
-        });
+    this.roomService.getTemp()
+      .subscribe(room => {
+        if (this.room.id === room.id) {
+          console.log(room);
+          this.room.heater_status = room.heater_status;
+          this.room.humidity = room.humidity;
+          this.room.room_temp = room.room_temp;
+          this.room.isalive = room.isalive;
+        }
+      });
   }
 
   changeStatus() {

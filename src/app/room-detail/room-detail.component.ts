@@ -1,9 +1,8 @@
 import {Component, Input, OnChanges} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {FullstatService} from '../fullstat.service';
 import {Chart} from 'chart.js';
 import {Data} from './Data';
-import {Response} from '../Response';
 import * as moment from 'moment';
 
 @Component({
@@ -12,11 +11,10 @@ import * as moment from 'moment';
   styleUrls: ['./room-detail.component.css']
 })
 export class RoomDetailComponent implements OnChanges {
-  constructor(private route: ActivatedRoute, private  fullStat: FullstatService, private router: Router) {
+  constructor(private route: ActivatedRoute, private  fullStat: FullstatService) {
   }
 
   @Input() roomId;
-
   time = [];  // YYYY.MM.DD HH:MM:SS
   temp = [];
   tempChart: Array<any> = [];
@@ -32,7 +30,6 @@ export class RoomDetailComponent implements OnChanges {
   isShowDetail = false;
 
   ngOnChanges(changes) {
-    console.log(this.roomId);
     if ('roomId' in changes && this.roomId) {
       this.isShowDetail = true;
       this.chacngeChart(1, this.roomId);
@@ -42,9 +39,8 @@ export class RoomDetailComponent implements OnChanges {
   /**
    * This method build chart from times and temperature
    */
-  buildChart(time, data, canvasID, chartName) {
-    chartName = new Chart(canvasID, {
-      type: 'line',
+  buildChart(time, data, canvasID) {
+    Chart.Line(canvasID, {
       data: {
         labels: time,
         datasets: [
@@ -52,20 +48,13 @@ export class RoomDetailComponent implements OnChanges {
             label: canvasID,
             data: data,
             borderColor: '#1dba9c',
-            fill: false
+            fill: false,
+            lineTension: .15,
+            pointRadius: 2,
           }
         ]
       },
       options: {
-        responsive: false,
-        elements: {
-          point: {
-            radius: 2
-          },
-          line: {
-            tension: .15, // disables bezier curves
-          }
-        },
         legend: {
           display: true,
         },
@@ -134,6 +123,7 @@ export class RoomDetailComponent implements OnChanges {
       this.co2.push(co2Object.co2);
       this.co2Time.push(moment(co2Object.fulldate, 'YYYY-MM-DD HH:mm:ss'));
     });
+
   }
 
   /**
@@ -142,13 +132,15 @@ export class RoomDetailComponent implements OnChanges {
    * @param date - date from LocalStorage
    */
   main(date) {
-    this.fullStat.getStatisticByDate(date).subscribe((res: Response) => {
-      const {message: data} = res;
-      console.log(data);
-      this.dataController(data);
-      this.buildChart(this.time, this.temp, 'temperature', this.tempChart);
-      this.buildChart(this.humidTime, this.humidit, 'humidity', this.humidityChart);
-      this.buildChart(this.co2Time, this.co2, 'co2', this.co2Chart);
-    });
+
+    const data = this.fullStat.getStatisticByDate(date);
+    console.log(data);
+
+    this.dataController(data);
+
+    this.buildChart(this.time, this.temp, 'temperature');
+    this.buildChart(this.humidTime, this.humidit, 'humidity');
+    this.buildChart(this.co2Time, this.co2, 'co2');
+
   }
 }
