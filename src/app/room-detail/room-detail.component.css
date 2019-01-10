@@ -76,20 +76,13 @@
 
 .timeLine {
   width: 90%;
-  height: 30px;
+  height: 10px;
   background-color: #A7A7A7;
 }
 
-.timeLine>i {
+.timeLine span {
   float: left;
-  /*width: 30px;*/
-  /*height: 30px;*/
-  color: #0cdecb;
+  height: 10px;
+  background-color: #0cdecb;;
   position: relative;
 }
-
-/*.pointOnTimeLine {*/
-  /*position: relative;*/
-  /*background-color: #0cdecb;*/
-  /*width: 30%;*/
-/*}*/

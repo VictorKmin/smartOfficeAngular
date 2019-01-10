@@ -14,6 +14,8 @@ import {take} from 'rxjs/operators';
 export class RoomDetailComponent implements OnChanges, OnInit {
 // export class RoomDetailComponent implements OnChanges {
   @Input() roomId;
+  firstPointStart;
+  widthOfBlock;
 
   countOfPaginationDays;
   startingPagination;
@@ -57,6 +59,7 @@ export class RoomDetailComponent implements OnChanges, OnInit {
   co2 = [];
 
   isShowDetail = false;
+  isPaginationDownAvalible;
 
   charts = {};
 
@@ -96,7 +99,6 @@ export class RoomDetailComponent implements OnChanges, OnInit {
     });
   }
 
-
   changeDaysCount(daysCount) {
     console.log(daysCount);
     this.countOfPaginationDays = daysCount;
@@ -117,7 +119,6 @@ export class RoomDetailComponent implements OnChanges, OnInit {
     this.humidTime = [];
     this.co2Time = [];
     this.co2 = [];
-
 
     if (roomId) {
       localStorage.setItem('roomId', roomId);
@@ -190,8 +191,14 @@ export class RoomDetailComponent implements OnChanges, OnInit {
   timeLine() {
     this.fullStat.getCountOfDays()
       .pipe(take(1))
-      .subscribe(days => {
-        console.log(days);
+      .subscribe(datesArray => {
+        const countOfBlocks = Math.ceil(datesArray.length / this.countOfPaginationDays);
+        this.firstPointStart = 100 - (100 / countOfBlocks);
+        const paginationNumber = this.startingPagination / this.countOfPaginationDays;
+        const currentPosition = 100 - (this.firstPointStart);
+        this.firstPointStart = 100 - currentPosition * paginationNumber;
+        this.widthOfBlock = 100 / countOfBlocks;
+        (countOfBlocks === paginationNumber) ? this.isPaginationDownAvalible = false : this.isPaginationDownAvalible = true;
       });
   }
 
@@ -199,7 +206,7 @@ export class RoomDetailComponent implements OnChanges, OnInit {
     this.fullStat.getNewestStatistic().subscribe(value => {
       const {fulldate, humidity, room_temp, co2, id} = value;
 
-      if (this.temp.length !== 0 && this.finishedPagination === 0 && this.roomId === id) {
+      if (this.finishedPagination === 0 && this.roomId === id) {
 
         this.charts['temperature'].data.datasets[0].data.shift();
         this.charts['temperature'].data.datasets[0].data.push(room_temp);

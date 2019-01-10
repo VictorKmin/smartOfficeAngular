@@ -9,12 +9,11 @@
     <button (click)="changeDaysCount(30)" class="changeDay"><span>ONE MONTH</span></button>
   </div>
   <div>
-    <div class="pagination" style="float: left">
+    <div class="pagination" style="float: left" [ngClass]="{'unclickable': !isPaginationDownAvalible}">
       <i class="fas fa-forward" style="transform: rotate(180deg);" (click)="paginationMinus()"></i>
     </div>
     <div class="timeLine">
-      <!--<span [ngStyle]="{'left.%': 60}" class=""></span>-->
-      <i  [ngStyle]="{'left.%': 60}" class="fab fa-accessible-icon"></i>
+      <span [ngStyle]="{'left.%': firstPointStart , 'width.%' :widthOfBlock}"></span>
     </div>
     <div class="pagination" style="float: right" [ngClass]="{'unclickable': !finishedPagination}">
       <i class="fas fa-forward" (click)="paginationPlus()"></i>
