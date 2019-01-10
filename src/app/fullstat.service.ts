@@ -9,10 +9,17 @@ export class FullstatService {
   constructor(private socket: Socket) {
   }
 
-  getStatisticByDate(body) {
-    console.log(body);
-    this.socket.emit('buildChart', body);
+  getStatisticByDate(info) {
+    console.log(info);
+    this.socket.emit('buildChart', info);
+    return this.socket.fromEvent('charts');
+  }
 
-   return this.socket.fromEvent('charts');
+  getNewestStatistic() {
+    return this.socket.fromEvent('updateChart');
+  }
+
+  getCountOfDays() {
+    return this.socket.fromEvent('timeLine');
   }
 }

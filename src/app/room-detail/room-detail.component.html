@@ -1,12 +1,24 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
 <div [ngClass]="{'hide': !isShowDetail}">
   <div class="buttons">
-    <button (click)="chacngeChart(1)" class="changeDay"><span>ONE DAY</span></button>
-    <button (click)="chacngeChart(2)" class="changeDay"><span>TWO DAYS</span></button>
-    <button (click)="chacngeChart(7)" class="changeDay"><span>ONE WEEK</span></button>
-    <button (click)="chacngeChart()" class="changeDay"><span>ONE MONTH</span></button>
-    <!--<button (click)="clearCanv()" class="changeDay"><span>CLEAR</span></button>-->
+    <button (click)="changeDaysCount(1)" class="changeDay"><span>ONE DAY</span></button>
+    <button (click)="changeDaysCount(2)" class="changeDay"><span>TWO DAYS</span></button>
+    <button (click)="changeDaysCount(7)" class="changeDay"><span>ONE WEEK</span></button>
+    <button (click)="changeDaysCount(30)" class="changeDay"><span>ONE MONTH</span></button>
   </div>
   <div>
+    <div class="pagination" style="float: left">
+      <i class="fas fa-forward" style="transform: rotate(180deg);" (click)="paginationMinus()"></i>
+    </div>
+    <div class="timeLine">
+      <!--<span [ngStyle]="{'left.%': 60}" class=""></span>-->
+      <i  [ngStyle]="{'left.%': 60}" class="fab fa-accessible-icon"></i>
+    </div>
+    <div class="pagination" style="float: right" [ngClass]="{'unclickable': !finishedPagination}">
+      <i class="fas fa-forward" (click)="paginationPlus()"></i>
+    </div>
     <canvas id="temperature" style="width: 100%; height: 400px;">{{ tempChart }}</canvas>
   </div>
   <div>

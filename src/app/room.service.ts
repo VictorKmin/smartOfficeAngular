@@ -14,6 +14,6 @@ export class RoomService {
   }
 
   getTemp() {
-    return this.socket.fromEvent('oneRoom');
+    return this.socket.fromEvent('lastRoomStat');
   }
 }

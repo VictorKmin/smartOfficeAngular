@@ -47,3 +47,49 @@
 .changeDay span:hover:after {
   opacity: 1;
 }
+
+.pagination {
+  width: 50px;
+  height: 30px;
+}
+
+.pagination i {
+  color: #0c917f;
+  cursor: pointer;
+  height: 30px;
+  font-size: 30px;
+}
+
+.pagination i:hover {
+  color: #0cdecb;
+  transition: 1s;
+}
+
+.pagination.unclickable {
+  color: #6e6e6e;
+  pointer-events: none;
+}
+
+.pagination.unclickable i {
+  color: #6e6e6e;
+}
+
+.timeLine {
+  width: 90%;
+  height: 30px;
+  background-color: #A7A7A7;
+}
+
+.timeLine>i {
+  float: left;
+  /*width: 30px;*/
+  /*height: 30px;*/
+  color: #0cdecb;
+  position: relative;
+}
+
+/*.pointOnTimeLine {*/
+  /*position: relative;*/
+  /*background-color: #0cdecb;*/
+  /*width: 30%;*/
+/*}*/

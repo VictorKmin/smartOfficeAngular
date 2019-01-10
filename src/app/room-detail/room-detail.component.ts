@@ -1,10 +1,9 @@
-import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FullstatService} from '../fullstat.service';
 import {Chart} from 'chart.js';
 import {Data} from './Data';
 import * as moment from 'moment';
-import {Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 @Component({
@@ -12,19 +11,50 @@ import {take} from 'rxjs/operators';
   templateUrl: './room-detail.component.html',
   styleUrls: ['./room-detail.component.css']
 })
-export class RoomDetailComponent implements OnChanges {
+export class RoomDetailComponent implements OnChanges, OnInit {
+// export class RoomDetailComponent implements OnChanges {
   @Input() roomId;
-  time = [];  // YYYY.MM.DD HH:MM:SS
+
+  countOfPaginationDays;
+  startingPagination;
+  finishedPagination;
+
+  // All chart options
+  options = {
+    elements: {
+      point: {
+        radius: 2
+      },
+      line: {
+        tension: .15, // disables bezier curves
+      }
+    },
+    legend: {
+      display: true,
+    },
+    // https://codepen.io/shivabhusal/pen/ayyVeL?editors=1010 - how I do this
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          unit: 'hour',
+          displayFormats: {
+            hour: 'MM-DD HH:MM'
+          }
+        },
+        distribution: 'linear'
+      }],
+    }
+  };
+
+  tempTime = [];  // YYYY.MM.DD HH:MM:SS
   temp = [];
-  tempChart: Array<any> = [];
 
   humidTime = [];  // YYYY.MM.DD HH:MM:SS
   humidit = [];
-  humidityChart: Array<any> = [];
 
   co2Time = [];  // YYYY.MM.DD HH:MM:SS
   co2 = [];
-  co2Chart: Array<any> = [];
 
   isShowDetail = false;
 
@@ -36,7 +66,10 @@ export class RoomDetailComponent implements OnChanges {
   ngOnChanges(changes) {
     if ('roomId' in changes && this.roomId) {
       this.isShowDetail = true;
-      this.chacngeChart(1, this.roomId);
+      this.countOfPaginationDays = 1;
+      this.startingPagination = 1;
+      this.finishedPagination = 0;
+      this.changeChart(1, 0, this.roomId);
     }
   }
 
@@ -56,31 +89,20 @@ export class RoomDetailComponent implements OnChanges {
             data: data,
             borderColor: '#1dba9c',
             fill: false,
-            lineTension: .15,
-            pointRadius: 2,
           }
         ]
       },
-      options: {
-        legend: {
-          display: true,
-        },
-        // https://codepen.io/shivabhusal/pen/ayyVeL?editors=1010 - how I do this
-        scales: {
-          xAxes: [{
-            type: 'time',
-            time: {
-              unit: 'hour',
-              displayFormats: {
-                hour: 'MM-DD HH:MM'
-              }
-            },
-            distribution: 'linear'
-          }],
-        }
-      }
+      options: this.options
     });
-    console.log(this.charts);
+  }
+
+
+  changeDaysCount(daysCount) {
+    console.log(daysCount);
+    this.countOfPaginationDays = daysCount;
+    this.startingPagination = daysCount;
+    this.finishedPagination = 0;
+    this.changeChart(daysCount, 0, undefined);
   }
 
   /**
@@ -88,40 +110,42 @@ export class RoomDetailComponent implements OnChanges {
    * Take date from datepicker, trim it, build another object
    * Then we insert it into local storage and build chart
    */
-  chacngeChart(days, roomId) {
-    this.time = [];
+  changeChart(dayOfStartSearch, dayOfFinishSearch, roomId) {
+    this.tempTime = [];
     this.temp = [];
-    this.tempChart = [];
     this.humidit = [];
     this.humidTime = [];
-    this.humidityChart = [];
     this.co2Time = [];
     this.co2 = [];
-    this.co2Chart = [];
+
 
     if (roomId) {
       localStorage.setItem('roomId', roomId);
     } else {
       roomId = localStorage.getItem('roomId');
     }
-    const body = {
-      countOfDays: days,
+
+    this.roomId = roomId;
+    const infoAboutSearch = {
+      dayOfStartSearch,
+      dayOfFinishSearch,
       roomId
     };
 
-    this.main(body);
+    this.timeLine();
+    this.main(infoAboutSearch);
   }
 
   /**
    * This method take array statistic, iterate it
-   * Then we push temperature to "temp" array and dates to "time" array
+   * Then we push temperature to "temp" array and dates to "tempTime" array
    * @param res - array of statistic from back-end response.
    */
   private dataController(res: Data) {
     const {humidity, temperature, co2} = res;
     temperature.forEach(temperatureObject => {
       this.temp.push(temperatureObject.room_temp);
-      this.time.push(moment(temperatureObject.fulldate, 'YYYY-MM-DD HH:mm:ss'));
+      this.tempTime.push(moment(temperatureObject.fulldate, 'YYYY-MM-DD HH:mm:ss'));
     });
     humidity.forEach(humidityOnject => {
       this.humidit.push(humidityOnject.humidity);
@@ -137,20 +161,66 @@ export class RoomDetailComponent implements OnChanges {
   /**
    * This method checks if we have an error.
    * If error present - we take Error code and render error page
-   * @param date - date from LocalStorage
+   * @param info - information about room (day of start searching, day of finish searching, room id)
    */
-  main(date) {
-    this.fullStat.getStatisticByDate(date)
+  main(info) {
+    this.fullStat.getStatisticByDate(info)
       .pipe(take(1))
       .subscribe(res => {
         console.log(res);
         this.dataController(res.message);
-        this.buildChart(this.time, this.temp, 'temperature');
+        this.buildChart(this.tempTime, this.temp, 'temperature');
         this.buildChart(this.humidTime, this.humidit, 'humidity');
         this.buildChart(this.co2Time, this.co2, 'co2');
       });
-
-
   }
 
+  paginationMinus() {
+    this.finishedPagination = this.startingPagination;
+    this.startingPagination = this.startingPagination + this.countOfPaginationDays;
+    this.changeChart(this.startingPagination, this.finishedPagination, undefined);
+  }
+
+  paginationPlus() {
+    this.startingPagination = this.finishedPagination;
+    this.finishedPagination = this.startingPagination - this.countOfPaginationDays;
+    this.changeChart(this.startingPagination, this.finishedPagination, undefined);
+  }
+
+  timeLine() {
+    this.fullStat.getCountOfDays()
+      .pipe(take(1))
+      .subscribe(days => {
+        console.log(days);
+      });
+  }
+
+  ngOnInit() {
+    this.fullStat.getNewestStatistic().subscribe(value => {
+      const {fulldate, humidity, room_temp, co2, id} = value;
+
+      if (this.temp.length !== 0 && this.finishedPagination === 0 && this.roomId === id) {
+
+        this.charts['temperature'].data.datasets[0].data.shift();
+        this.charts['temperature'].data.datasets[0].data.push(room_temp);
+        this.charts['temperature'].data.labels.shift();
+        this.charts['temperature'].data.labels.push(moment(fulldate, 'YYYY-MM-DD HH:mm:ss'));
+
+        this.charts['humidity'].data.datasets[0].data.shift();
+        this.charts['humidity'].data.datasets[0].data.push(humidity);
+        this.charts['humidity'].data.labels.shift();
+        this.charts['humidity'].data.labels.push(moment(fulldate, 'YYYY-MM-DD HH:mm:ss'));
+
+        this.charts['co2'].data.datasets[0].data.shift();
+        this.charts['co2'].data.datasets[0].data.push(co2);
+        this.charts['co2'].data.labels.shift();
+        this.charts['co2'].data.labels.push(moment(fulldate, 'YYYY-MM-DD HH:mm:ss'));
+
+
+        this.charts['temperature'].update();
+        this.charts['humidity'].update();
+        this.charts['co2'].update();
+      }
+    });
+  }
 }
