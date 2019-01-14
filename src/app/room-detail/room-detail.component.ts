@@ -86,8 +86,8 @@ export class RoomDetailComponent implements OnChanges, OnInit {
         },
         tooltips: {
           caretSize: 15,
-          titleFontSize: 20,
-          bodyFontSize: 25
+          titleFontSize: 16,
+          bodyFontSize: 19
         },
         legend: {
           display: false,
