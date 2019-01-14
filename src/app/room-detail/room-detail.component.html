@@ -9,21 +9,23 @@
     <button (click)="changeDaysCount(30)" class="changeDay"><span>ONE MONTH</span></button>
   </div>
   <div>
-    <div class="pagination" style="float: left" [ngClass]="{'unclickable': !isPaginationDownAvalible}">
+    <div class="pagination" style="float: left;  margin-top: -10px"
+         [ngClass]="{'unclickable': !isPaginationDownAvailable}">
       <i class="fas fa-forward" style="transform: rotate(180deg);" (click)="paginationMinus()"></i>
     </div>
     <div class="timeLine">
       <span [ngStyle]="{'left.%': firstPointStart , 'width.%' :widthOfBlock}"></span>
     </div>
-    <div class="pagination" style="float: right" [ngClass]="{'unclickable': !finishedPagination}">
+    <div class="pagination" style="float: right; margin-top: -20px" [ngClass]="{'unclickable': !finishedPagination}">
       <i class="fas fa-forward" (click)="paginationPlus()"></i>
     </div>
-    <canvas id="temperature" style="width: 100%; height: 400px;">{{ tempChart }}</canvas>
+    <br>
+    <canvas id="temperature">{{ tempChart }}</canvas>
   </div>
   <div>
-    <canvas id="humidity" style="width: 100%; height: 400px">{{ humidityChart }}</canvas>
+    <canvas id="humidity">{{ humidityChart }}</canvas>
   </div>
   <div>
-    <canvas id="co2" style="width: 100%; height: 400px">{{ co2Chart }}</canvas>
+    <canvas id="co2">{{ co2Chart }}</canvas>
   </div>
 </div>

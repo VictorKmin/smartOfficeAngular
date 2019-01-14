@@ -10,7 +10,6 @@ export class FullstatService {
   }
 
   getStatisticByDate(info) {
-    console.log(info);
     this.socket.emit('buildChart', info);
     return this.socket.fromEvent('charts');
   }

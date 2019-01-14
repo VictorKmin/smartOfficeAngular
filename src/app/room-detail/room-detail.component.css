@@ -1,21 +1,28 @@
 #temperature {
+  position: relative;
   background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.44) 0%, rgba(0, 0, 0, 0.24) 35%, rgba(0, 0, 0, 0) 100%);
   margin-bottom: 30px;
+  width: 95% !important;
+  height: 600px !important;
 }
 
 #humidity {
   background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.44) 0%, rgba(0, 0, 0, 0.24) 35%, rgba(0, 0, 0, 0) 100%);
   margin-bottom: 30px;
+  width: 95% !important;
+  height: 600px !important;
 }
 
 #co2 {
   background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.44) 0%, rgba(0, 0, 0, 0.24) 35%, rgba(0, 0, 0, 0) 100%);
   margin-bottom: 30px;
+  width: 95% !important;
+  height: 600px !important;
 }
 
 .changeDay {
   cursor: pointer;
-  border: 0px;
+  border: 0;
   color: white;
   margin: 20px;
   width: 150px;
@@ -48,13 +55,9 @@
   opacity: 1;
 }
 
-.pagination {
-  width: 50px;
-  height: 30px;
-}
-
 .pagination i {
   color: #0c917f;
+  position: fixed;
   cursor: pointer;
   height: 30px;
   font-size: 30px;
@@ -65,23 +68,20 @@
   transition: 1s;
 }
 
-.pagination.unclickable {
+.pagination.unclickable i {
   color: #6e6e6e;
   pointer-events: none;
 }
 
-.pagination.unclickable i {
-  color: #6e6e6e;
-}
-
 .timeLine {
-  width: 90%;
+  width: 95%;
   height: 10px;
-  background-color: #A7A7A7;
+  background-color: rgba(182, 182, 182, 0.45);
 }
 
 .timeLine span {
   float: left;
+  transition: 1s;
   height: 10px;
   background-color: #0cdecb;;
   position: relative;

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {RoomDetailComponent} from './room-detail/room-detail.component';
 import {AllRoomsComponent} from './all-rooms/all-rooms.component';
-import {ErrorComponent} from './error/error.component';
 
 const routes: Routes = [
   {path: '', component: AllRoomsComponent},
@@ -10,10 +9,6 @@ const routes: Routes = [
     path: 'room/:id',
     component: RoomDetailComponent
   },
-  {
-    path: 'error/:code',
-    component: ErrorComponent
-  }
 ];
 
 @NgModule({

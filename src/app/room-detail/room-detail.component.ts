@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {FullstatService} from '../fullstat.service';
 import {Chart} from 'chart.js';
 import {Data} from './Data';
+import {Response} from '../Response';
 import * as moment from 'moment';
 import {take} from 'rxjs/operators';
 
@@ -12,7 +13,6 @@ import {take} from 'rxjs/operators';
   styleUrls: ['./room-detail.component.css']
 })
 export class RoomDetailComponent implements OnChanges, OnInit {
-// export class RoomDetailComponent implements OnChanges {
   @Input() roomId;
   firstPointStart;
   widthOfBlock;
@@ -22,32 +22,6 @@ export class RoomDetailComponent implements OnChanges, OnInit {
   finishedPagination;
 
   // All chart options
-  options = {
-    elements: {
-      point: {
-        radius: 2
-      },
-      line: {
-        tension: .15, // disables bezier curves
-      }
-    },
-    legend: {
-      display: true,
-    },
-    // https://codepen.io/shivabhusal/pen/ayyVeL?editors=1010 - how I do this
-    scales: {
-      xAxes: [{
-        type: 'time',
-        time: {
-          unit: 'hour',
-          displayFormats: {
-            hour: 'MM-DD HH:MM'
-          }
-        },
-        distribution: 'linear'
-      }],
-    }
-  };
 
   tempTime = [];  // YYYY.MM.DD HH:MM:SS
   temp = [];
@@ -59,13 +33,19 @@ export class RoomDetailComponent implements OnChanges, OnInit {
   co2 = [];
 
   isShowDetail = false;
-  isPaginationDownAvalible;
+  isPaginationDownAvailable;
 
   charts = {};
 
   constructor(private route: ActivatedRoute, private  fullStat: FullstatService) {
   }
 
+  /**
+   * This method work just on fist click.
+   * Change variable to show detail
+   * Change variables for pagination info
+   * @param changes - if of current room. Triggered when button Build Chart in room-component is clicked;
+   */
   ngOnChanges(changes) {
     if ('roomId' in changes && this.roomId) {
       this.isShowDetail = true;
@@ -95,12 +75,61 @@ export class RoomDetailComponent implements OnChanges, OnInit {
           }
         ]
       },
-      options: this.options
+      options: {
+        elements: {
+          point: {
+            radius: 3.5
+          },
+          line: {
+            tension: .15, // disables bezier curves
+          }
+        },
+        tooltips: {
+          caretSize: 15,
+          titleFontSize: 20,
+          bodyFontSize: 25
+        },
+        legend: {
+          display: false,
+          fontSize: 150
+        },
+        title: {
+          display: true,
+          text: canvasID,
+          fontSize: 30
+        },
+        // https://codepen.io/shivabhusal/pen/ayyVeL?editors=1010 - how I do this
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#cecece',
+              fontSize: 17
+            },
+            type: 'time',
+            time: {
+              unit: 'hour',
+              displayFormats: {
+                hour: 'MM-DD HH:MM'
+              }
+            },
+            distribution: 'linear'
+          }],
+          yAxes: [{
+            ticks: {
+              fontColor: '#cecece',
+              fontSize: 17
+            }
+          }]
+        }
+      }
     });
   }
 
+  /**
+   * Change variables for another methods.
+   * @param daysCount - count of days to search
+   */
   changeDaysCount(daysCount) {
-    console.log(daysCount);
     this.countOfPaginationDays = daysCount;
     this.startingPagination = daysCount;
     this.finishedPagination = 0;
@@ -109,7 +138,8 @@ export class RoomDetailComponent implements OnChanges, OnInit {
 
   /**
    * This method works, when we press button on html page.
-   * Take date from datepicker, trim it, build another object
+   * Take date from datepicker, clear all values from arrays,
+   * Then we change time line and get statistic on date from datepicker
    * Then we insert it into local storage and build chart
    */
   changeChart(dayOfStartSearch, dayOfFinishSearch, roomId) {
@@ -160,15 +190,13 @@ export class RoomDetailComponent implements OnChanges, OnInit {
   }
 
   /**
-   * This method checks if we have an error.
-   * If error present - we take Error code and render error page
+   * Take data from server. Push into arrays and build charts.
    * @param info - information about room (day of start searching, day of finish searching, room id)
    */
   main(info) {
     this.fullStat.getStatisticByDate(info)
       .pipe(take(1))
-      .subscribe(res => {
-        console.log(res);
+      .subscribe((res: Response) => {
         this.dataController(res.message);
         this.buildChart(this.tempTime, this.temp, 'temperature');
         this.buildChart(this.humidTime, this.humidit, 'humidity');
@@ -176,18 +204,31 @@ export class RoomDetailComponent implements OnChanges, OnInit {
       });
   }
 
+  /**
+   * Method for pagination down.
+   * Rebuild chart on click
+   */
   paginationMinus() {
     this.finishedPagination = this.startingPagination;
     this.startingPagination = this.startingPagination + this.countOfPaginationDays;
     this.changeChart(this.startingPagination, this.finishedPagination, undefined);
   }
 
+  /**
+   * Method for pagination up.
+   * Rebuild chart on click
+   */
   paginationPlus() {
     this.startingPagination = this.finishedPagination;
     this.finishedPagination = this.startingPagination - this.countOfPaginationDays;
     this.changeChart(this.startingPagination, this.finishedPagination, undefined);
   }
 
+  /**
+   * Method to create time line.
+   * Takes count of days in Data Base. Calculate start position of point in time line
+   * Calculate width of one block and block position if pagination change.
+   */
   timeLine() {
     this.fullStat.getCountOfDays()
       .pipe(take(1))
@@ -198,16 +239,21 @@ export class RoomDetailComponent implements OnChanges, OnInit {
         const currentPosition = 100 - (this.firstPointStart);
         this.firstPointStart = 100 - currentPosition * paginationNumber;
         this.widthOfBlock = 100 / countOfBlocks;
-        (countOfBlocks === paginationNumber) ? this.isPaginationDownAvalible = false : this.isPaginationDownAvalible = true;
+        (countOfBlocks === paginationNumber) ? this.isPaginationDownAvailable = false : this.isPaginationDownAvailable = true;
       });
   }
 
+  /**
+   * This method work when module send request to server.
+   * Delete first element from array and push newest data.
+   * Then we update charts.
+   */
   ngOnInit() {
     this.fullStat.getNewestStatistic().subscribe(value => {
       const {fulldate, humidity, room_temp, co2, id} = value;
 
       if (this.finishedPagination === 0 && this.roomId === id) {
-
+        // https://jsfiddle.net/red_stapler/u5aanta8/1  - how i do this
         this.charts['temperature'].data.datasets[0].data.shift();
         this.charts['temperature'].data.datasets[0].data.push(room_temp);
         this.charts['temperature'].data.labels.shift();

@@ -14,7 +14,6 @@ import {FormsModule} from '@angular/forms';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ErrorComponent} from './error/error.component';
 
 import {SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
 
@@ -26,7 +25,6 @@ const config: SocketIoConfig = {url: 'http://192.168.0.131:5000', options: {}};
     RoomComponent,
     AllRoomsComponent,
     RoomDetailComponent,
-    ErrorComponent,
   ],
   imports: [
     BrowserModule,
