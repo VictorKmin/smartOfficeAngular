@@ -16,7 +16,7 @@
     <div class="timeLine">
       <span [ngStyle]="{'left.%': firstPointStart , 'width.%' :widthOfBlock}"></span>
     </div>
-    <div class="pagination" style="float: right; margin-top: -20px" [ngClass]="{'unclickable': !finishedPagination}">
+    <div class="pagination" style="float: right; margin-top: -20px; margin-right: 25px" [ngClass]="{'unclickable': !finishedPagination}">
       <i class="fas fa-forward" (click)="paginationPlus()"></i>
     </div>
     <br>

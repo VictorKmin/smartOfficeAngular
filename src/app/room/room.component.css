@@ -18,21 +18,18 @@
   transition: .5s;
 }
 
-.humidityStatus span:before {
-  content: '\2614';;
-}
-
 .humidityStatus {
   display: inline-block;
+  padding-left: 10px;
 }
 
-.humidityStatus > span {
-  padding: 10px;
-}
-
-.humidityStatus > span:hover {
+.humidityStatus:hover {
   color: rgba(0, 162, 200, 0.75);
   transition: .5s;
+}
+.humidityStatus i {
+  font-size: 13px;
+  margin-right: 3px;
 }
 
 .heaterStatus {
@@ -141,11 +138,15 @@
 }
 
 .isAuto span:after {
-  content: '\2714';
+  content: 'Follow';
+  color: #88cb29;
 }
 
 .auto span:after {
-  content: '\2716';
+  padding-left: 11px;
+  padding-right: 11px;
+  content: 'Off';
+  color: #cb0000;
 }
 
 .heater {
@@ -171,7 +172,12 @@
 .heater:hover .tooltiptext {
   visibility: visible;
 }
-
 .buildChart:hover .tooltiptext {
+  visibility: visible;
+}
+.temperatureStatus:hover .tooltiptext {
+  visibility: visible;
+}
+.humidityStatus:hover .tooltiptext {
   visibility: visible;
 }

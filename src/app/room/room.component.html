@@ -8,32 +8,34 @@
     </div>
     <br>
     <div class="isAuto" [ngClass]="{'auto': !room.auto_mode}" style="float: left">
-      <span> Auto: </span>
+      <span></span>
     </div>
-    <span class="tooltiptext">Auto/Off</span>
+    <span class="tooltiptext">On/Off</span>
   </div>
   <b style="font-size: 25px;">ROOM {{room.id}}</b>
   <div class="buildChart" (click)="makeChart(room.id)">
     <i class="fas fa-chart-line"></i>
-    <span class="tooltiptext">Build chart</span>
+    <span class="tooltiptext">Statistics</span>
   </div>
   <br>
   <div align="center">
     <div class="changeTemp"  [ngClass]="{'off': !room.auto_mode}">
       <i class="fas fa-chevron-up" (click)="plusTemp()" style="margin-right: 55px;"></i>
-      <span class="tooltiptext">Auto/Off</span>
     </div>
     <div class="newTemp">{{room.temp}} °</div>
     <div class="changeTemp"  [ngClass]="{'off': !room.auto_mode}">
       <i class="fas fa-chevron-up" (click)="minusTemp()" style="transform: rotate(180deg);"></i>
-      <span class="tooltiptext">Auto/Off</span>
     </div>
   </div>
   <br>
   <div class="roomStat">
     <div class="temperatureStatus">
       <i class="fas fa-thermometer-half"></i> {{room.room_temp}} °C
+      <span class="tooltiptext">Current temperature</span>
     </div>
-    <div class="humidityStatus"><span>  {{room.humidity}} %</span></div>
+    <div class="humidityStatus">
+      <i class="fas fa-umbrella"></i>{{room.humidity}} %
+      <span class="tooltiptext">Current humidity</span>
+    </div>
   </div>
 </div>
