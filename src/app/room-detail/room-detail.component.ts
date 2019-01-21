@@ -232,7 +232,7 @@ export class RoomDetailComponent implements OnChanges, OnInit {
   timeLine() {
     this.fullStat.getCountOfDays()
       .pipe(take(1))
-      .subscribe(datesArray => {
+      .subscribe((datesArray: any) => {
         const countOfBlocks = Math.ceil(datesArray.length / this.countOfPaginationDays);
         this.firstPointStart = 100 - (100 / countOfBlocks);
         const paginationNumber = this.startingPagination / this.countOfPaginationDays;
@@ -249,7 +249,7 @@ export class RoomDetailComponent implements OnChanges, OnInit {
    * Then we update charts.
    */
   ngOnInit() {
-    this.fullStat.getNewestStatistic().subscribe(value => {
+    this.fullStat.getNewestStatistic().subscribe((value: Data) => {
       const {fulldate, humidity, room_temp, co2, id} = value;
 
       if (this.finishedPagination === 0 && this.roomId === id) {

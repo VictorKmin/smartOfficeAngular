@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {RoomService} from '../room.service';
+import {Data} from '../room-detail/Data';
 
 @Component({
   selector: 'app-room',
@@ -35,7 +36,7 @@ export class RoomComponent implements OnInit {
 
   ngOnInit(): void {
     this.roomService.getTemp()
-      .subscribe(room => {
+      .subscribe((room: Data) => {
         if (this.room.id === room.id) {
           console.log(room);
           this.room.heater_status = room.heater_status;
